@@ -1681,3 +1681,80 @@ p.lede {
   background: transparent;
   cursor: pointer;
 }
+
+/* --- NEW PORTFOLIO UPDATES --- */
+
+/* Personality Header - Using the blue pattern requested */
+.personality-header {
+  background-image: url("https://raw.githubusercontent.com/GabrielaFiona/gabrielafiona-portfolio-draft/c2a5e0257ac05a2a30d257e1db76544a3e6b79a8/assets/img/backgrndblutri.png") !important;
+  background-size: cover !important;
+  background-position: center !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: #ffffff !important;
+}
+
+.personality-header h1, 
+.personality-header .hero-tagline,
+.personality-header p {
+  color: #ffffff !important;
+}
+
+/* Resume Section Styling */
+.resume-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.resume-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+  padding: 2rem;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.resume-card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 4px; height: 100%;
+  background: var(--accent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.resume-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-5px);
+}
+
+.resume-card:hover::before {
+  opacity: 1;
+}
+
+.resume-year {
+  display: block;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+.resume-card h3 {
+  margin-bottom: 0.75rem;
+}
+
+.resume-card p {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+/* Fix for Carousel section naming */
+#hobbies .carousel-shell {
+  background-image: radial-gradient(circle at top left, #15152b, #050510) !important; /* Cleaner look for hobbies */
+}
