@@ -57,7 +57,7 @@ body {
 
 .intro-photo {
   width: 100%;
-  max-width: 300px; /* Constrains the headshot size */
+  max-width: 300px;
   justify-self: center;
 }
 
@@ -65,7 +65,7 @@ body {
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
-  border-radius: 50%; /* Makes it a clean circle */
+  border-radius: 50%;
   border: 4px solid var(--accent);
   box-shadow: 0 15px 30px rgba(0,0,0,0.5);
 }
@@ -78,7 +78,7 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 .resume-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 2rem; }
 .resume-item { background: rgba(255,255,255,0.03); padding: 2rem; border-radius: 18px; border: 1px solid var(--border-subtle); }
 
-/* 3. LOGO SCROLLER (ORIGINAL STYLES) */
+/* 3. LOGO SCROLLER */
 .logo-scroller {
   position: relative;
   overflow: hidden;
@@ -121,14 +121,21 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 .carousel-item { min-width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; }
 .carousel-visual img { width: 100%; height: 300px; object-fit: cover; border-radius: 12px; }
 
-.mini-footer { padding: 4rem 0; text-align: center; border-top: 1px solid var(--border-subtle); }
+/* FOOTER SIZING */
+.mini-footer { 
+  padding: 3rem 0; 
+  text-align: center; 
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 2rem;
+}
+.footer-logo img {
+  max-height: 35px; /* Adjust this number to get your perfect "mini" look */
+  width: auto;
+  margin-bottom: 1rem;
+}
 .fb-icon { width: 18px; height: 18px; filter: invert(100%); }
 
 @media (max-width: 850px) {
   .intro-inner, .resume-grid, .carousel-item { grid-template-columns: 1fr; text-align: center; }
   .intro-photo { max-width: 200px; }
-  
-.footer-logo img {
-  max-height: 30px; /* Restores your original size */
-  width: auto;
 }
