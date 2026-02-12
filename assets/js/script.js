@@ -1,6 +1,4 @@
 // Smooth scroll for any [data-scroll-to] element
-// Updated so it scrolls inside .page-wrapper (our main scroll container)
-// instead of the browser window. This plays nicer inside Google Sites embeds.
 (function () {
   var scroller = document.querySelector(".page-wrapper") || window;
 
@@ -27,73 +25,98 @@
   });
 })();
 
-// Carousel logic
+// UPDATED: Scroll-Snap Carousel Logic
 (function () {
   var track = document.querySelector(".carousel-track");
   var slides = Array.from(document.querySelectorAll(".carousel-item"));
   var prevBtn = document.querySelector("[data-carousel-prev]");
   var nextBtn = document.querySelector("[data-carousel-next]");
   var dotsContainer = document.querySelector("[data-carousel-dots]");
+  
   if (!track || slides.length === 0 || !dotsContainer) return;
 
-  var currentIndex = 0;
-  var slideCount = slides.length;
   var autoInterval = null;
-  var AUTO_DELAY = 8000;
+  var AUTO_DELAY = 6000;
 
   // Create dots
   slides.forEach(function (_, index) {
     var dot = document.createElement("button");
     dot.className = "carousel-dot" + (index === 0 ? " is-active" : "");
     dot.setAttribute("type", "button");
+    dot.setAttribute("aria-label", "Go to slide " + (index + 1));
     dot.dataset.index = index;
     dotsContainer.appendChild(dot);
   });
 
   var dots = Array.from(dotsContainer.querySelectorAll(".carousel-dot"));
 
-  function goToSlide(index) {
-    currentIndex = (index + slideCount) % slideCount;
-    var offset = -currentIndex * 100;
-    track.style.transform = "translateX(" + offset + "%)";
+  // Helper: Get current slide index based on scroll position
+  function getCurrentIndex() {
+    var scrollLeft = track.scrollLeft;
+    var width = track.offsetWidth;
+    return Math.round(scrollLeft / width);
+  }
+
+  // Helper: Update active dot
+  function updateDots() {
+    var idx = getCurrentIndex();
     dots.forEach(function (dot, i) {
-      dot.classList.toggle("is-active", i === currentIndex);
+      dot.classList.toggle("is-active", i === idx);
     });
   }
 
-  function next() {
-    goToSlide(currentIndex + 1);
-  }
-
-  function prev() {
-    goToSlide(currentIndex - 1);
-  }
-
-  dots.forEach(function (dot) {
-    dot.addEventListener("click", function () {
-      var idx = parseInt(dot.dataset.index, 10);
-      goToSlide(idx);
-      resetAuto();
+  // Scroll to specific index
+  function scrollToIndex(index) {
+    var width = track.offsetWidth;
+    track.scrollTo({
+      left: width * index,
+      behavior: 'smooth'
     });
-  });
+  }
 
+  // Button Listeners
   if (nextBtn) {
     nextBtn.addEventListener("click", function () {
-      next();
+      var current = getCurrentIndex();
+      var next = (current + 1) % slides.length; // Loop to start
+      scrollToIndex(next);
       resetAuto();
     });
   }
 
   if (prevBtn) {
     prevBtn.addEventListener("click", function () {
-      prev();
+      var current = getCurrentIndex();
+      var prev = (current - 1 + slides.length) % slides.length; // Loop to end
+      scrollToIndex(prev);
       resetAuto();
     });
   }
 
+  // Dot Listeners
+  dots.forEach(function (dot) {
+    dot.addEventListener("click", function () {
+      var idx = parseInt(dot.dataset.index, 10);
+      scrollToIndex(idx);
+      resetAuto();
+    });
+  });
+
+  // Listen for scroll events (updates dots on swipe)
+  track.addEventListener("scroll", function() {
+    // Debounce dot update slightly for performance
+    if(track.scrollTimeout) clearTimeout(track.scrollTimeout);
+    track.scrollTimeout = setTimeout(updateDots, 100);
+  });
+
+  // Auto Scroll Logic
   function startAuto() {
     if (autoInterval) return;
-    autoInterval = setInterval(next, AUTO_DELAY);
+    autoInterval = setInterval(function() {
+      var current = getCurrentIndex();
+      var next = (current + 1) % slides.length;
+      scrollToIndex(next);
+    }, AUTO_DELAY);
   }
 
   function stopAuto() {
@@ -107,70 +130,50 @@
     startAuto();
   }
 
-  // Pause autoplay on hover
+  // Pause on hover (desktop) or touch (mobile)
   var carouselShell = document.querySelector(".carousel-shell");
   if (carouselShell) {
     carouselShell.addEventListener("mouseenter", stopAuto);
     carouselShell.addEventListener("mouseleave", startAuto);
+    carouselShell.addEventListener("touchstart", stopAuto, { passive: true });
+    carouselShell.addEventListener("touchend", startAuto);
   }
 
   // Initialize
-  goToSlide(0);
   startAuto();
 })();
 
-// Logo scroller: pause on hover, make it touch-interactive on mobile
+// Logo scroller logic (same as before, preserved)
 var logoScroller = document.querySelector("[data-logo-scroller]");
 if (logoScroller) {
   var logoTrack = logoScroller.querySelector(".logo-track");
-
   if (logoTrack) {
-    function pauseLogoAnimation() {
-      logoTrack.style.animationPlayState = "paused";
-    }
+    function pauseLogoAnimation() { logoTrack.style.animationPlayState = "paused"; }
+    function resumeLogoAnimation() { logoTrack.style.animationPlayState = "running"; }
 
-    function resumeLogoAnimation() {
-      logoTrack.style.animationPlayState = "running";
-    }
-
-    // Desktop hover
     logoScroller.addEventListener("mouseenter", pauseLogoAnimation);
     logoScroller.addEventListener("mouseleave", resumeLogoAnimation);
 
-    // Touch interaction (mobile / touchscreens)
     var touchActive = false;
     var resumeTimeout = null;
 
     function queueResume() {
-      if (resumeTimeout) {
-        clearTimeout(resumeTimeout);
-      }
+      if (resumeTimeout) clearTimeout(resumeTimeout);
       resumeTimeout = setTimeout(function () {
-        if (!touchActive) {
-          resumeLogoAnimation();
-        }
-      }, 1500); // resume 1.5s after user stops touching
+        if (!touchActive) resumeLogoAnimation();
+      }, 1500);
     }
 
-    logoScroller.addEventListener(
-      "touchstart",
-      function () {
-        touchActive = true;
-        pauseLogoAnimation();
-        if (resumeTimeout) {
-          clearTimeout(resumeTimeout);
-          resumeTimeout = null;
-        }
-      },
-      { passive: true }
-    );
+    logoScroller.addEventListener("touchstart", function () {
+      touchActive = true;
+      pauseLogoAnimation();
+      if (resumeTimeout) {
+        clearTimeout(resumeTimeout);
+        resumeTimeout = null;
+      }
+    }, { passive: true });
 
     logoScroller.addEventListener("touchend", function () {
-      touchActive = false;
-      queueResume();
-    });
-
-    logoScroller.addEventListener("touchcancel", function () {
       touchActive = false;
       queueResume();
     });
@@ -179,6 +182,4 @@ if (logoScroller) {
 
 // Year in footer
 var yearEl = document.getElementById("year");
-if (yearEl) {
-  yearEl.textContent = new Date().getFullYear();
-}
+if (yearEl) yearEl.textContent = new Date().getFullYear();
