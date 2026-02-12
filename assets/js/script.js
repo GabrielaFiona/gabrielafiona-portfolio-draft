@@ -1,4 +1,6 @@
 // Smooth scroll for any [data-scroll-to] element
+// Updated so it scrolls inside .page-wrapper (our main scroll container)
+// instead of the browser window. This plays nicer inside Google Sites embeds.
 (function () {
   var scroller = document.querySelector(".page-wrapper") || window;
 
@@ -25,27 +27,19 @@
   });
 })();
 
-// Updated Carousel logic with Touch & Drag
+// Carousel logic
 (function () {
   var track = document.querySelector(".carousel-track");
   var slides = Array.from(document.querySelectorAll(".carousel-item"));
-  var windowEl = document.querySelector(".carousel-window");
   var prevBtn = document.querySelector("[data-carousel-prev]");
   var nextBtn = document.querySelector("[data-carousel-next]");
   var dotsContainer = document.querySelector("[data-carousel-dots]");
-  if (!track || slides.length === 0 || !dotsContainer || !windowEl) return;
+  if (!track || slides.length === 0 || !dotsContainer) return;
 
   var currentIndex = 0;
   var slideCount = slides.length;
   var autoInterval = null;
   var AUTO_DELAY = 8000;
-
-  // Touch/Drag Variables
-  var isDragging = false;
-  var startPos = 0;
-  var currentTranslate = 0;
-  var prevTranslate = 0;
-  var animationID = 0;
 
   // Create dots
   slides.forEach(function (_, index) {
@@ -60,92 +54,131 @@
 
   function goToSlide(index) {
     currentIndex = (index + slideCount) % slideCount;
-    currentTranslate = -currentIndex * windowEl.offsetWidth;
-    prevTranslate = currentTranslate;
-    setSliderPosition();
-    updateDots();
-  }
-
-  function updateDots() {
+    var offset = -currentIndex * 100;
+    track.style.transform = "translateX(" + offset + "%)";
     dots.forEach(function (dot, i) {
       dot.classList.toggle("is-active", i === currentIndex);
     });
   }
 
-  function setSliderPosition() {
-    track.style.transform = "translateX(" + currentTranslate + "px)";
+  function next() {
+    goToSlide(currentIndex + 1);
   }
 
-  // Interaction Logic (Touch & Mouse)
-  windowEl.addEventListener('mousedown', dragStart);
-  windowEl.addEventListener('touchstart', dragStart);
-  windowEl.addEventListener('mouseup', dragEnd);
-  windowEl.addEventListener('touchend', dragEnd);
-  windowEl.addEventListener('mousemove', dragAction);
-  windowEl.addEventListener('touchmove', dragAction);
-  windowEl.addEventListener('mouseleave', dragEnd);
-
-  function dragStart(e) {
-    isDragging = true;
-    startPos = getPositionX(e);
-    stopAuto();
-    track.style.transition = 'none';
+  function prev() {
+    goToSlide(currentIndex - 1);
   }
-
-  function dragAction(e) {
-    if (!isDragging) return;
-    var currentPosition = getPositionX(e);
-    var diff = currentPosition - startPos;
-    currentTranslate = prevTranslate + diff;
-    setSliderPosition();
-  }
-
-  function dragEnd() {
-    isDragging = false;
-    track.style.transition = 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)';
-    var movedBy = currentTranslate - prevTranslate;
-
-    if (movedBy < -100 && currentIndex < slideCount - 1) currentIndex += 1;
-    if (movedBy > 100 && currentIndex > 0) currentIndex -= 1;
-
-    goToSlide(currentIndex);
-    startAuto();
-  }
-
-  function getPositionX(e) {
-    return e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
-  }
-
-  // Buttons
-  if (nextBtn) nextBtn.addEventListener("click", function () { goToSlide(currentIndex + 1); resetAuto(); });
-  if (prevBtn) prevBtn.addEventListener("click", function () { goToSlide(currentIndex - 1); resetAuto(); });
 
   dots.forEach(function (dot) {
     dot.addEventListener("click", function () {
-      goToSlide(parseInt(dot.dataset.index, 10));
+      var idx = parseInt(dot.dataset.index, 10);
+      goToSlide(idx);
       resetAuto();
     });
   });
 
-  function startAuto() { if (!autoInterval) autoInterval = setInterval(function() { goToSlide(currentIndex + 1); }, AUTO_DELAY); }
-  function stopAuto() { clearInterval(autoInterval); autoInterval = null; }
-  function resetAuto() { stopAuto(); startAuto(); }
+  if (nextBtn) {
+    nextBtn.addEventListener("click", function () {
+      next();
+      resetAuto();
+    });
+  }
 
-  window.addEventListener('resize', function() { goToSlide(currentIndex); });
+  if (prevBtn) {
+    prevBtn.addEventListener("click", function () {
+      prev();
+      resetAuto();
+    });
+  }
+
+  function startAuto() {
+    if (autoInterval) return;
+    autoInterval = setInterval(next, AUTO_DELAY);
+  }
+
+  function stopAuto() {
+    if (!autoInterval) return;
+    clearInterval(autoInterval);
+    autoInterval = null;
+  }
+
+  function resetAuto() {
+    stopAuto();
+    startAuto();
+  }
+
+  // Pause autoplay on hover
+  var carouselShell = document.querySelector(".carousel-shell");
+  if (carouselShell) {
+    carouselShell.addEventListener("mouseenter", stopAuto);
+    carouselShell.addEventListener("mouseleave", startAuto);
+  }
+
+  // Initialize
   goToSlide(0);
   startAuto();
 })();
 
-// Logo scroller: pause on hover
+// Logo scroller: pause on hover, make it touch-interactive on mobile
 var logoScroller = document.querySelector("[data-logo-scroller]");
 if (logoScroller) {
   var logoTrack = logoScroller.querySelector(".logo-track");
+
   if (logoTrack) {
-    logoScroller.addEventListener("mouseenter", function() { logoTrack.style.animationPlayState = "paused"; });
-    logoScroller.addEventListener("mouseleave", function() { logoTrack.style.animationPlayState = "running"; });
+    function pauseLogoAnimation() {
+      logoTrack.style.animationPlayState = "paused";
+    }
+
+    function resumeLogoAnimation() {
+      logoTrack.style.animationPlayState = "running";
+    }
+
+    // Desktop hover
+    logoScroller.addEventListener("mouseenter", pauseLogoAnimation);
+    logoScroller.addEventListener("mouseleave", resumeLogoAnimation);
+
+    // Touch interaction (mobile / touchscreens)
+    var touchActive = false;
+    var resumeTimeout = null;
+
+    function queueResume() {
+      if (resumeTimeout) {
+        clearTimeout(resumeTimeout);
+      }
+      resumeTimeout = setTimeout(function () {
+        if (!touchActive) {
+          resumeLogoAnimation();
+        }
+      }, 1500); // resume 1.5s after user stops touching
+    }
+
+    logoScroller.addEventListener(
+      "touchstart",
+      function () {
+        touchActive = true;
+        pauseLogoAnimation();
+        if (resumeTimeout) {
+          clearTimeout(resumeTimeout);
+          resumeTimeout = null;
+        }
+      },
+      { passive: true }
+    );
+
+    logoScroller.addEventListener("touchend", function () {
+      touchActive = false;
+      queueResume();
+    });
+
+    logoScroller.addEventListener("touchcancel", function () {
+      touchActive = false;
+      queueResume();
+    });
   }
 }
 
 // Year in footer
 var yearEl = document.getElementById("year");
-if (yearEl) { yearEl.textContent = new Date().getFullYear(); }
+if (yearEl) {
+  yearEl.textContent = new Date().getFullYear();
+}
