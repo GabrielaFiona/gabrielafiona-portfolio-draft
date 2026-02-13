@@ -43,7 +43,7 @@ body {
 
 .section { max-width: 1120px; margin: 0 auto; width: 100%; padding: 0 1.25rem; }
 
-/* 1. INTRO HERO */
+/* 1. INTRO HERO & EXTENDED HEADER */
 .intro-hero {
   position: relative;
 }
@@ -54,8 +54,8 @@ body {
     url("https://raw.githubusercontent.com/GabrielaFiona/gabrielafiona-portfolio-draft/c2a5e0257ac05a2a30d257e1db76544a3e6b79a8/assets/img/backgrndblutri.png");
   background-size: cover;
   background-position: center;
-  /* UPDATED: Reduced top padding to move content up */
-  padding: 5rem 2rem 5rem; 
+  /* UPDATED: Huge bottom padding to extend background behind the card */
+  padding: 5rem 2rem 18rem; 
   text-align: center;
 }
 
@@ -64,7 +64,8 @@ body {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
   gap: 3rem;
   align-items: center;
-  margin-top: -3rem;
+  /* UPDATED: Negative margin pulls card up into the extended blue area */
+  margin-top: -14rem; 
   background: rgba(11, 11, 25, 0.7);
   backdrop-filter: blur(10px);
   padding: 3rem;
@@ -139,7 +140,7 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   border-radius: 18px;
   padding: 2.5rem;
   text-align: center;
-  min-height: 220px;
+  min-height: 240px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -153,7 +154,6 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   border-color: var(--accent-green);
 }
 
-/* Hide all slides by default */
 .timeline-slide {
   display: none;
   animation: fadeIn 0.4s ease forwards;
@@ -165,7 +165,16 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   to { opacity: 1; transform: translateY(0); }
 }
 
-.resume-date { color: var(--accent); font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: 600; }
+.timeline-year-label {
+  display: inline-block;
+  background: rgba(255,255,255,0.1);
+  padding: 0.2rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent-green);
+  font-weight: 600;
+}
 
 .timeline-nav-btn {
   background: transparent;
@@ -178,6 +187,7 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   font-size: 0.85rem;
   transition: 0.3s;
   white-space: nowrap;
+  user-select: none;
 }
 
 .timeline-nav-btn:hover {
@@ -186,18 +196,19 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   background: rgba(76, 125, 255, 0.1);
 }
 
-/* The Line & Dots */
+/* Timeline Dots Track */
 .timeline-track-container {
   width: 100%;
-  max-width: 600px;
+  max-width: 500px;
   margin: 0 auto;
   position: relative;
-  padding-top: 10px;
+  padding-top: 15px;
+  height: 60px; /* Space for dots + text */
 }
 
 .timeline-line {
   position: absolute;
-  top: 50%;
+  top: 22px;
   left: 0;
   width: 100%;
   height: 2px;
@@ -209,7 +220,14 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   position: relative;
   z-index: 2;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; 
+}
+
+.t-dot-wrapper {
+  text-align: center;
+  cursor: pointer;
+  width: 40px; /* clickable area */
+  transition: 0.3s;
 }
 
 .t-dot {
@@ -218,17 +236,31 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   border-radius: 50%;
   background: var(--bg);
   border: 2px solid var(--text-muted);
-  cursor: pointer;
+  margin: 0 auto 5px;
   transition: 0.3s;
 }
 
-.t-dot:hover, .t-dot.active {
+.t-year-text {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0;
+  transition: 0.3s;
+  display: block;
+}
+
+/* Show year on hover or active */
+.t-dot-wrapper:hover .t-year-text,
+.t-dot-wrapper.active .t-year-text { opacity: 1; }
+
+.t-dot-wrapper:hover .t-dot,
+.t-dot-wrapper.active .t-dot {
   background: var(--accent);
   border-color: var(--accent);
   transform: scale(1.3);
 }
 
-/* 3. CURRENTLY LEARNING (NEW) */
+
+/* 3. CURRENTLY LEARNING */
 .learning-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -268,23 +300,28 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 .learning-info h3 { font-size: 1.1rem; margin-bottom: 0.2rem; }
 .learning-info p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.4; }
 
-/* 4. LOGO SCROLLER */
+
+/* 4. LOGO SCROLLER (INTERACTIVE) */
 .logo-scroller {
   position: relative;
-  overflow: hidden;
+  overflow: hidden; /* JS handles scroll */
   border-radius: 18px;
   border: 1px solid var(--border-subtle);
   background: rgba(5, 5, 16, 0.6);
-  padding: 1.2rem 0;
+  padding: 1.5rem 0;
   box-shadow: 0 0 30px rgba(78, 254, 121, 0.05);
+  cursor: grab; /* Indicates draggable */
 }
+.logo-scroller:active { cursor: grabbing; }
 
 .logo-track {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 4rem;
   white-space: nowrap;
-  animation: logo-marquee 30s linear infinite;
+  padding-left: 2rem;
+  width: max-content; 
+  user-select: none; /* Prevents text selection while dragging */
 }
 
 .logo-item {
@@ -294,6 +331,7 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: none; /* Images inside shouldn't be draggable themselves */
 }
 
 .logo-item img {
@@ -303,11 +341,8 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   opacity: 0.8;
   transition: opacity 0.3s;
 }
-.logo-item:hover img { opacity: 1; }
 
-@keyframes logo-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-
-/* 5. CAROUSEL & FOOTER */
+/* 5. PROJECT LIBRARY CAROUSEL */
 .carousel-shell { 
   background: var(--bg-soft); 
   border-radius: var(--radius-xl); 
@@ -403,6 +438,7 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 }
 .carousel-dot.is-active { background: var(--accent-purple); transform: scale(1.2); }
 
+/* FOOTER */
 .mini-footer { 
   padding: 4rem 0 6rem 0; 
   text-align: center; 
@@ -419,6 +455,8 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 .fb-icon { width: 20px; height: 20px; filter: invert(100%); opacity: 0.7; transition: 0.2s;}
 .fb-icon:hover { opacity: 1; filter: drop-shadow(0 0 5px var(--accent)); }
 
+
+/* RESPONSIVE */
 @media (max-width: 850px) {
   .intro-inner, .resume-grid, .carousel-item { grid-template-columns: 1fr; text-align: center; }
   .intro-photo { max-width: 220px; margin-bottom: 1.5rem; }
@@ -426,7 +464,18 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   .carousel-visual img { height: 250px; }
   body { background-size: 100% 100%; }
   
-  /* Timeline Mobile Adjustments */
-  .timeline-main-row { flex-direction: column-reverse; }
-  .timeline-nav-btn { width: 100%; }
+  /* Timeline Mobile: Buttons at bottom side-by-side */
+  .timeline-main-row { 
+    flex-wrap: wrap; 
+  }
+  .timeline-display {
+    width: 100%;
+    order: 1; /* Content first */
+  }
+  .timeline-nav-btn { 
+    width: 48%; /* Side by side */
+    order: 2; /* Buttons below */
+    justify-content: center;
+    display: flex;
+  }
 }
