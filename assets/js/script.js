@@ -25,6 +25,57 @@
   });
 })();
 
+// UPDATED: Interactive Timeline Logic
+(function() {
+  var slides = document.querySelectorAll(".timeline-slide");
+  var dots = document.querySelectorAll(".t-dot");
+  var btnFuture = document.getElementById("tl-btn-left"); // Newer items
+  var btnPast = document.getElementById("tl-btn-right");  // Older items
+  
+  if (!slides.length) return;
+
+  var currentIndex = 0; // 0 = Most recent (Present), increases as we go "Back in time"
+
+  function updateTimeline(index) {
+    // Hide all
+    slides.forEach(function(s) { s.classList.remove("active"); });
+    dots.forEach(function(d) { d.classList.remove("active"); });
+    
+    // Show active
+    slides[index].classList.add("active");
+    dots[index].classList.add("active");
+    
+    currentIndex = index;
+  }
+
+  // Button Logic
+  // "Future" button goes to lower index (Newer items)
+  if(btnFuture) {
+    btnFuture.addEventListener("click", function() {
+      var nextIndex = currentIndex - 1;
+      if (nextIndex < 0) nextIndex = slides.length - 1; // Loop to end
+      updateTimeline(nextIndex);
+    });
+  }
+
+  // "Back in time" button goes to higher index (Older items)
+  if(btnPast) {
+    btnPast.addEventListener("click", function() {
+      var nextIndex = currentIndex + 1;
+      if (nextIndex >= slides.length) nextIndex = 0; // Loop to start
+      updateTimeline(nextIndex);
+    });
+  }
+
+  // Dot Click Logic
+  dots.forEach(function(dot) {
+    dot.addEventListener("click", function() {
+      var idx = parseInt(dot.getAttribute("data-index"), 10);
+      updateTimeline(idx);
+    });
+  });
+})();
+
 // UPDATED: Scroll-Snap Carousel Logic
 (function () {
   var track = document.querySelector(".carousel-track");
@@ -50,14 +101,12 @@
 
   var dots = Array.from(dotsContainer.querySelectorAll(".carousel-dot"));
 
-  // Helper: Get current slide index based on scroll position
   function getCurrentIndex() {
     var scrollLeft = track.scrollLeft;
     var width = track.offsetWidth;
     return Math.round(scrollLeft / width);
   }
 
-  // Helper: Update active dot
   function updateDots() {
     var idx = getCurrentIndex();
     dots.forEach(function (dot, i) {
@@ -65,7 +114,6 @@
     });
   }
 
-  // Scroll to specific index
   function scrollToIndex(index) {
     var width = track.offsetWidth;
     track.scrollTo({
@@ -74,11 +122,10 @@
     });
   }
 
-  // Button Listeners
   if (nextBtn) {
     nextBtn.addEventListener("click", function () {
       var current = getCurrentIndex();
-      var next = (current + 1) % slides.length; // Loop to start
+      var next = (current + 1) % slides.length; 
       scrollToIndex(next);
       resetAuto();
     });
@@ -87,13 +134,12 @@
   if (prevBtn) {
     prevBtn.addEventListener("click", function () {
       var current = getCurrentIndex();
-      var prev = (current - 1 + slides.length) % slides.length; // Loop to end
+      var prev = (current - 1 + slides.length) % slides.length; 
       scrollToIndex(prev);
       resetAuto();
     });
   }
 
-  // Dot Listeners
   dots.forEach(function (dot) {
     dot.addEventListener("click", function () {
       var idx = parseInt(dot.dataset.index, 10);
@@ -102,14 +148,11 @@
     });
   });
 
-  // Listen for scroll events (updates dots on swipe)
   track.addEventListener("scroll", function() {
-    // Debounce dot update slightly for performance
     if(track.scrollTimeout) clearTimeout(track.scrollTimeout);
     track.scrollTimeout = setTimeout(updateDots, 100);
   });
 
-  // Auto Scroll Logic
   function startAuto() {
     if (autoInterval) return;
     autoInterval = setInterval(function() {
@@ -130,7 +173,6 @@
     startAuto();
   }
 
-  // Pause on hover (desktop) or touch (mobile)
   var carouselShell = document.querySelector(".carousel-shell");
   if (carouselShell) {
     carouselShell.addEventListener("mouseenter", stopAuto);
@@ -139,11 +181,10 @@
     carouselShell.addEventListener("touchend", startAuto);
   }
 
-  // Initialize
   startAuto();
 })();
 
-// Logo scroller logic (same as before, preserved)
+// Logo scroller logic
 var logoScroller = document.querySelector("[data-logo-scroller]");
 if (logoScroller) {
   var logoTrack = logoScroller.querySelector(".logo-track");
@@ -180,6 +221,5 @@ if (logoScroller) {
   }
 }
 
-// Year in footer
 var yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
