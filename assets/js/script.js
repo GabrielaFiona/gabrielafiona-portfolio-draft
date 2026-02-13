@@ -25,58 +25,196 @@
   });
 })();
 
-// UPDATED: Interactive Timeline Logic
+// ----------------------------------------------------
+// UPDATED: Interactive Timeline (2026 - 2016 Logic)
+// ----------------------------------------------------
 (function() {
-  var slides = document.querySelectorAll(".timeline-slide");
-  var dots = document.querySelectorAll(".t-dot");
-  var btnFuture = document.getElementById("tl-btn-left"); // Newer items
-  var btnPast = document.getElementById("tl-btn-right");  // Older items
+  var slides = Array.from(document.querySelectorAll(".timeline-slide"));
+  var dotsContainer = document.getElementById("timeline-dots-container");
+  var btnFuture = document.getElementById("tl-btn-left");
+  var btnPast = document.getElementById("tl-btn-right");
   
-  if (!slides.length) return;
+  if (!slides.length || !dotsContainer) return;
 
-  var currentIndex = 0; // 0 = Most recent (Present), increases as we go "Back in time"
+  // Configuration
+  var VISIBLE_DOTS = 5; 
+  var currentIndex = 0; // 0 is the newest year (2026)
+  var dotWindowStart = 0; // The index of the first visible dot
 
-  function updateTimeline(index) {
-    // Hide all
-    slides.forEach(function(s) { s.classList.remove("active"); });
-    dots.forEach(function(d) { d.classList.remove("active"); });
+  // Render Dots based on the current window
+  function renderDots() {
+    dotsContainer.innerHTML = ""; // Clear existing
     
-    // Show active
-    slides[index].classList.add("active");
-    dots[index].classList.add("active");
+    // Determine which dots to show
+    var end = Math.min(dotWindowStart + VISIBLE_DOTS, slides.length);
+    
+    for (var i = dotWindowStart; i < end; i++) {
+      var slide = slides[i];
+      var year = slide.getAttribute("data-year");
+      
+      var wrapper = document.createElement("div");
+      wrapper.className = "t-dot-wrapper" + (i === currentIndex ? " active" : "");
+      wrapper.dataset.index = i;
+      
+      var dot = document.createElement("div");
+      dot.className = "t-dot";
+      
+      var label = document.createElement("span");
+      label.className = "t-year-text";
+      label.innerText = year;
+      
+      wrapper.appendChild(dot);
+      wrapper.appendChild(label);
+      
+      // Click event
+      wrapper.addEventListener("click", function() {
+        var idx = parseInt(this.dataset.index, 10);
+        goToSlide(idx);
+      });
+      
+      dotsContainer.appendChild(wrapper);
+    }
+  }
+
+  function goToSlide(index) {
+    // Bounds check
+    if (index < 0) index = 0;
+    if (index >= slides.length) index = slides.length - 1;
     
     currentIndex = index;
+
+    // Logic: If we hit the 2nd to last dot in current view, shift window forward
+    // If we hit 2nd dot from start, shift window backward
+    var relativePos = currentIndex - dotWindowStart;
+    
+    // Shift logic (Moving into the past)
+    if (relativePos >= VISIBLE_DOTS - 2) { 
+      // Shift so current becomes the 2nd item (context)
+      dotWindowStart = Math.min(currentIndex - 1, slides.length - VISIBLE_DOTS);
+    }
+    
+    // Shift logic (Moving into the future)
+    if (relativePos <= 1) {
+      dotWindowStart = Math.max(currentIndex - 3, 0);
+    }
+    
+    // Safety clamp
+    if (dotWindowStart < 0) dotWindowStart = 0;
+    if (dotWindowStart > slides.length - VISIBLE_DOTS) dotWindowStart = slides.length - VISIBLE_DOTS;
+
+    // Update UI
+    slides.forEach(function(s) { s.classList.remove("active"); });
+    slides[currentIndex].classList.add("active");
+    
+    renderDots();
   }
 
-  // Button Logic
-  // "Future" button goes to lower index (Newer items)
+  // Button Listeners
   if(btnFuture) {
     btnFuture.addEventListener("click", function() {
-      var nextIndex = currentIndex - 1;
-      if (nextIndex < 0) nextIndex = slides.length - 1; // Loop to end
-      updateTimeline(nextIndex);
+      goToSlide(currentIndex - 1);
     });
   }
 
-  // "Back in time" button goes to higher index (Older items)
   if(btnPast) {
     btnPast.addEventListener("click", function() {
-      var nextIndex = currentIndex + 1;
-      if (nextIndex >= slides.length) nextIndex = 0; // Loop to start
-      updateTimeline(nextIndex);
+      goToSlide(currentIndex + 1);
     });
   }
 
-  // Dot Click Logic
-  dots.forEach(function(dot) {
-    dot.addEventListener("click", function() {
-      var idx = parseInt(dot.getAttribute("data-index"), 10);
-      updateTimeline(idx);
-    });
-  });
+  // Initialize
+  renderDots();
 })();
 
-// UPDATED: Scroll-Snap Carousel Logic
+
+// ----------------------------------------------------
+// UPDATED: Draggable Logo Scroller (Interactive + Auto)
+// ----------------------------------------------------
+(function() {
+  var slider = document.querySelector('.logo-scroller');
+  var track = document.querySelector('.logo-track');
+  
+  if(!slider || !track) return;
+
+  var isDown = false;
+  var startX;
+  var scrollLeft;
+  var autoScrollSpeed = 0.8; // px per frame
+  var isAutoScrolling = true;
+  var animationId;
+
+  // Auto Scroll Function
+  function autoScroll() {
+    if(isAutoScrolling && !isDown) {
+      slider.scrollLeft += autoScrollSpeed;
+      // Note: For true infinite looping, you'd need to duplicate items. 
+      // This simple version just scrolls until the end.
+    }
+    animationId = requestAnimationFrame(autoScroll);
+  }
+
+  // Start Auto Scroll
+  animationId = requestAnimationFrame(autoScroll);
+
+  // Stop auto scroll on interaction
+  function stopAuto() { isAutoScrolling = false; }
+  function startAuto() { isAutoScrolling = true; }
+
+  // Mouse/Touch Events
+  slider.addEventListener('mousedown', function(e) {
+    isDown = true;
+    stopAuto();
+    slider.classList.add('active');
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+  });
+
+  slider.addEventListener('mouseleave', function() {
+    isDown = false;
+    slider.classList.remove('active');
+    startAuto();
+  });
+
+  slider.addEventListener('mouseup', function() {
+    isDown = false;
+    slider.classList.remove('active');
+    startAuto();
+  });
+
+  slider.addEventListener('mousemove', function(e) {
+    if(!isDown) return;
+    e.preventDefault();
+    var x = e.pageX - slider.offsetLeft;
+    var walk = (x - startX) * 2; // Scroll-fast multiplier
+    slider.scrollLeft = scrollLeft - walk;
+  });
+
+  // Touch Support
+  slider.addEventListener('touchstart', function(e) {
+    isDown = true;
+    stopAuto();
+    startX = e.touches[0].pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+  }, { passive: true });
+
+  slider.addEventListener('touchend', function() {
+    isDown = false;
+    startAuto();
+  });
+
+  slider.addEventListener('touchmove', function(e) {
+    if(!isDown) return;
+    var x = e.touches[0].pageX - slider.offsetLeft;
+    var walk = (x - startX) * 2;
+    slider.scrollLeft = scrollLeft - walk;
+  }, { passive: true });
+
+})();
+
+
+// ----------------------------------------------------
+// CAROUSEL LOGIC (Project Library)
+// ----------------------------------------------------
 (function () {
   var track = document.querySelector(".carousel-track");
   var slides = Array.from(document.querySelectorAll(".carousel-item"));
@@ -94,7 +232,6 @@
     var dot = document.createElement("button");
     dot.className = "carousel-dot" + (index === 0 ? " is-active" : "");
     dot.setAttribute("type", "button");
-    dot.setAttribute("aria-label", "Go to slide " + (index + 1));
     dot.dataset.index = index;
     dotsContainer.appendChild(dot);
   });
@@ -102,9 +239,7 @@
   var dots = Array.from(dotsContainer.querySelectorAll(".carousel-dot"));
 
   function getCurrentIndex() {
-    var scrollLeft = track.scrollLeft;
-    var width = track.offsetWidth;
-    return Math.round(scrollLeft / width);
+    return Math.round(track.scrollLeft / track.offsetWidth);
   }
 
   function updateDots() {
@@ -115,17 +250,12 @@
   }
 
   function scrollToIndex(index) {
-    var width = track.offsetWidth;
-    track.scrollTo({
-      left: width * index,
-      behavior: 'smooth'
-    });
+    track.scrollTo({ left: track.offsetWidth * index, behavior: 'smooth' });
   }
 
   if (nextBtn) {
     nextBtn.addEventListener("click", function () {
-      var current = getCurrentIndex();
-      var next = (current + 1) % slides.length; 
+      var next = (getCurrentIndex() + 1) % slides.length; 
       scrollToIndex(next);
       resetAuto();
     });
@@ -133,8 +263,7 @@
 
   if (prevBtn) {
     prevBtn.addEventListener("click", function () {
-      var current = getCurrentIndex();
-      var prev = (current - 1 + slides.length) % slides.length; 
+      var prev = (getCurrentIndex() - 1 + slides.length) % slides.length; 
       scrollToIndex(prev);
       resetAuto();
     });
@@ -142,8 +271,7 @@
 
   dots.forEach(function (dot) {
     dot.addEventListener("click", function () {
-      var idx = parseInt(dot.dataset.index, 10);
-      scrollToIndex(idx);
+      scrollToIndex(parseInt(dot.dataset.index, 10));
       resetAuto();
     });
   });
@@ -156,8 +284,7 @@
   function startAuto() {
     if (autoInterval) return;
     autoInterval = setInterval(function() {
-      var current = getCurrentIndex();
-      var next = (current + 1) % slides.length;
+      var next = (getCurrentIndex() + 1) % slides.length;
       scrollToIndex(next);
     }, AUTO_DELAY);
   }
@@ -183,43 +310,6 @@
 
   startAuto();
 })();
-
-// Logo scroller logic
-var logoScroller = document.querySelector("[data-logo-scroller]");
-if (logoScroller) {
-  var logoTrack = logoScroller.querySelector(".logo-track");
-  if (logoTrack) {
-    function pauseLogoAnimation() { logoTrack.style.animationPlayState = "paused"; }
-    function resumeLogoAnimation() { logoTrack.style.animationPlayState = "running"; }
-
-    logoScroller.addEventListener("mouseenter", pauseLogoAnimation);
-    logoScroller.addEventListener("mouseleave", resumeLogoAnimation);
-
-    var touchActive = false;
-    var resumeTimeout = null;
-
-    function queueResume() {
-      if (resumeTimeout) clearTimeout(resumeTimeout);
-      resumeTimeout = setTimeout(function () {
-        if (!touchActive) resumeLogoAnimation();
-      }, 1500);
-    }
-
-    logoScroller.addEventListener("touchstart", function () {
-      touchActive = true;
-      pauseLogoAnimation();
-      if (resumeTimeout) {
-        clearTimeout(resumeTimeout);
-        resumeTimeout = null;
-      }
-    }, { passive: true });
-
-    logoScroller.addEventListener("touchend", function () {
-      touchActive = false;
-      queueResume();
-    });
-  }
-}
 
 var yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
