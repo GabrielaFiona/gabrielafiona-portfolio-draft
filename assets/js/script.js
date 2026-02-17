@@ -26,7 +26,7 @@
 })();
 
 // ----------------------------------------------------
-// UPDATED: Interactive Timeline (2026 - 2016 Logic)
+// UPDATED: Interactive Timeline (Looping Logic)
 // ----------------------------------------------------
 (function() {
   var slides = Array.from(document.querySelectorAll(".timeline-slide"));
@@ -36,43 +36,57 @@
   
   if (!slides.length || !dotsContainer) return;
 
-  // Configuration
-  var VISIBLE_DOTS = 5; 
   var currentIndex = 0; // 0 is the newest year (2026)
-  var dotWindowStart = 0; // The index of the first visible dot
+  var TOTAL_DOTS = 5;
 
-  // Render Dots based on the current window
-  function renderDots() {
-    dotsContainer.innerHTML = ""; // Clear existing
+  // 1. Initial Render of Fixed Dots
+  function initDots() {
+    dotsContainer.innerHTML = "";
     
-    // Determine which dots to show
-    var end = Math.min(dotWindowStart + VISIBLE_DOTS, slides.length);
-    
-    for (var i = dotWindowStart; i < end; i++) {
-      var slide = slides[i];
-      var year = slide.getAttribute("data-year");
-      
+    // Create exactly 5 dots
+    for (var i = 0; i < TOTAL_DOTS; i++) {
       var wrapper = document.createElement("div");
-      wrapper.className = "t-dot-wrapper" + (i === currentIndex ? " active" : "");
-      wrapper.dataset.index = i;
+      wrapper.className = "t-dot-wrapper";
       
       var dot = document.createElement("div");
       dot.className = "t-dot";
       
-      var label = document.createElement("span");
-      label.className = "t-year-text";
-      label.innerText = year;
-      
       wrapper.appendChild(dot);
-      wrapper.appendChild(label);
-      
-      // Click event
-      wrapper.addEventListener("click", function() {
-        var idx = parseInt(this.dataset.index, 10);
-        goToSlide(idx);
-      });
-      
       dotsContainer.appendChild(wrapper);
+    }
+  }
+
+  // 2. Update UI based on Current Index
+  function updateUI() {
+    // A. Show Correct Slide
+    slides.forEach(function(s) { s.classList.remove("active"); });
+    slides[currentIndex].classList.add("active");
+
+    // B. Handle Dots Logic
+    // Logic: Dots 0-3 loop left to right. Dot 4 is reserved ONLY for the very last slide.
+    var dotIndex;
+    
+    if (currentIndex === slides.length - 1) {
+      // If we are at the very last slide (2016), light up the 5th dot
+      dotIndex = 4;
+    } else {
+      // Otherwise loop through 0, 1, 2, 3
+      dotIndex = currentIndex % 4;
+    }
+
+    var dotWrappers = dotsContainer.querySelectorAll(".t-dot-wrapper");
+    dotWrappers.forEach(function(d, idx) {
+      if (idx === dotIndex) d.classList.add("active");
+      else d.classList.remove("active");
+    });
+
+    // C. Handle Button Text & Logic
+    if (btnPast) {
+      if (currentIndex === slides.length - 1) {
+        btnPast.innerHTML = "Jump to Now &uarr;";
+      } else {
+        btnPast.innerHTML = "&rarr; Back in time";
+      }
     }
   }
 
@@ -82,31 +96,7 @@
     if (index >= slides.length) index = slides.length - 1;
     
     currentIndex = index;
-
-    // Logic: If we hit the 2nd to last dot in current view, shift window forward
-    // If we hit 2nd dot from start, shift window backward
-    var relativePos = currentIndex - dotWindowStart;
-    
-    // Shift logic (Moving into the past)
-    if (relativePos >= VISIBLE_DOTS - 2) { 
-      // Shift so current becomes the 2nd item (context)
-      dotWindowStart = Math.min(currentIndex - 1, slides.length - VISIBLE_DOTS);
-    }
-    
-    // Shift logic (Moving into the future)
-    if (relativePos <= 1) {
-      dotWindowStart = Math.max(currentIndex - 3, 0);
-    }
-    
-    // Safety clamp
-    if (dotWindowStart < 0) dotWindowStart = 0;
-    if (dotWindowStart > slides.length - VISIBLE_DOTS) dotWindowStart = slides.length - VISIBLE_DOTS;
-
-    // Update UI
-    slides.forEach(function(s) { s.classList.remove("active"); });
-    slides[currentIndex].classList.add("active");
-    
-    renderDots();
+    updateUI();
   }
 
   // Button Listeners
@@ -118,12 +108,18 @@
 
   if(btnPast) {
     btnPast.addEventListener("click", function() {
-      goToSlide(currentIndex + 1);
+      // If we are at the end, jump to start (0)
+      if (currentIndex === slides.length - 1) {
+        goToSlide(0);
+      } else {
+        goToSlide(currentIndex + 1);
+      }
     });
   }
 
   // Initialize
-  renderDots();
+  initDots();
+  updateUI();
 })();
 
 
@@ -147,8 +143,10 @@
   function autoScroll() {
     if(isAutoScrolling && !isDown) {
       slider.scrollLeft += autoScrollSpeed;
-      // Note: For true infinite looping, you'd need to duplicate items. 
-      // This simple version just scrolls until the end.
+      // Loop check (simple reset for effect)
+      if(slider.scrollLeft >= (track.scrollWidth - slider.clientWidth)) {
+         // Optional: logic to loop smoothly could go here
+      }
     }
     animationId = requestAnimationFrame(autoScroll);
   }
