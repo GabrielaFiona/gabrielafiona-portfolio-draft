@@ -35,7 +35,7 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 6rem;
+  gap: 4rem; /* Reduced global gap */
   overflow-y: auto;
   overscroll-behavior-y: contain;
   scroll-behavior: smooth;
@@ -49,13 +49,12 @@ body {
 }
 
 .intro-header-bg {
-  background: 
-    linear-gradient(to bottom, rgba(5,5,16,0.3), var(--bg-soft)),
-    url("https://raw.githubusercontent.com/GabrielaFiona/gabrielafiona-portfolio-draft/c2a5e0257ac05a2a30d257e1db76544a3e6b79a8/assets/img/backgrndblutri.png");
+  /* REMOVED: The dark overlay gradient to brighten image */
+  background: url("https://raw.githubusercontent.com/GabrielaFiona/gabrielafiona-portfolio-draft/c2a5e0257ac05a2a30d257e1db76544a3e6b79a8/assets/img/backgrndblutri.png");
   background-size: cover;
-  background-position: center;
-  /* UPDATED: Huge bottom padding to extend background behind the card */
-  padding: 5rem 2rem 18rem; 
+  background-position: center bottom; /* Anchor image to bottom so it aligns with card */
+  /* UPDATED: Adjusted padding to pull content up and end bg before next section */
+  padding: 3rem 2rem 14rem; 
   text-align: center;
 }
 
@@ -64,9 +63,9 @@ body {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
   gap: 3rem;
   align-items: center;
-  /* UPDATED: Negative margin pulls card up into the extended blue area */
-  margin-top: -14rem; 
-  background: rgba(11, 11, 25, 0.7);
+  /* UPDATED: Negative margin pulls card up */
+  margin-top: -12rem; 
+  background: rgba(11, 11, 25, 0.85); /* Slightly darker backing for readability */
   backdrop-filter: blur(10px);
   padding: 3rem;
   border-radius: var(--radius-xl);
@@ -225,8 +224,9 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 
 .t-dot-wrapper {
   text-align: center;
-  cursor: pointer;
-  width: 40px; /* clickable area */
+  /* Dots are purely visual indicators in this logic, removed pointer */
+  cursor: default;
+  width: 40px; 
   transition: 0.3s;
 }
 
@@ -240,19 +240,7 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   transition: 0.3s;
 }
 
-.t-year-text {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  opacity: 0;
-  transition: 0.3s;
-  display: block;
-}
-
-/* Show year on hover or active */
-.t-dot-wrapper:hover .t-year-text,
-.t-dot-wrapper.active .t-year-text { opacity: 1; }
-
-.t-dot-wrapper:hover .t-dot,
+/* Show dot active state */
 .t-dot-wrapper.active .t-dot {
   background: var(--accent);
   border-color: var(--accent);
@@ -317,11 +305,12 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 .logo-track {
   display: flex;
   align-items: center;
-  gap: 4rem;
+  /* UPDATED: Reduced gap */
+  gap: 2.5rem; 
   white-space: nowrap;
   padding-left: 2rem;
   width: max-content; 
-  user-select: none; /* Prevents text selection while dragging */
+  user-select: none; 
 }
 
 .logo-item {
@@ -331,7 +320,8 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   display: flex;
   align-items: center;
   justify-content: center;
-  pointer-events: none; /* Images inside shouldn't be draggable themselves */
+  /* UPDATED: Allow clicks on the anchor tag */
+  pointer-events: auto; 
 }
 
 .logo-item img {
@@ -340,6 +330,8 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   object-fit: contain;
   opacity: 0.8;
   transition: opacity 0.3s;
+  /* UPDATED: Prevent image dragging so link works */
+  pointer-events: none; 
 }
 
 /* 5. PROJECT LIBRARY CAROUSEL */
@@ -464,7 +456,7 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   .carousel-visual img { height: 250px; }
   body { background-size: 100% 100%; }
   
-  /* Timeline Mobile: Buttons at bottom side-by-side */
+  /* UPDATED: Timeline Mobile Stack */
   .timeline-main-row { 
     flex-wrap: wrap; 
   }
@@ -473,9 +465,20 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
     order: 1; /* Content first */
   }
   .timeline-nav-btn { 
-    width: 48%; /* Side by side */
+    width: 100%; /* Stack fully */
     order: 2; /* Buttons below */
     justify-content: center;
     display: flex;
+    margin-bottom: 0.5rem;
+  }
+  
+  /* UPDATED: Logo edge-to-edge on mobile */
+  .logo-scroller {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    padding: 1rem 0;
+    margin: 0 -1.25rem; /* Negative margin to pull to edges of screen */
+    width: calc(100% + 2.5rem);
   }
 }
