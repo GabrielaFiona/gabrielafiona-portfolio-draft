@@ -26,7 +26,7 @@
 })();
 
 // ----------------------------------------------------
-// UPDATED: Interactive Timeline (Looping Logic)
+// UPDATED: Interactive Timeline (Sliding Window Logic)
 // ----------------------------------------------------
 (function() {
   var slides = Array.from(document.querySelectorAll(".timeline-slide"));
@@ -62,16 +62,19 @@
     slides.forEach(function(s) { s.classList.remove("active"); });
     slides[currentIndex].classList.add("active");
 
-    // B. Handle Dots Logic
-    // Logic: Dots 0-3 loop left to right. Dot 4 is reserved ONLY for the very last slide.
+    // B. Handle Dots Logic (Sliding Window)
+    var totalSlides = slides.length;
     var dotIndex;
-    
-    if (currentIndex === slides.length - 1) {
-      // If we are at the very last slide (2016), light up the 5th dot
+
+    // Logic:
+    // If we are at the very last slide (2016), use the Reserved Dot (index 4).
+    // Otherwise, clamp the dot index to 0-3.
+    // This creates the effect of moving 0->1->2->3, then staying at 3 while years pass,
+    // and finally jumping to 4 at the very end.
+    if (currentIndex === totalSlides - 1) {
       dotIndex = 4;
     } else {
-      // Otherwise loop through 0, 1, 2, 3
-      dotIndex = currentIndex % 4;
+      dotIndex = Math.min(currentIndex, 3);
     }
 
     var dotWrappers = dotsContainer.querySelectorAll(".t-dot-wrapper");
@@ -82,7 +85,7 @@
 
     // C. Handle Button Text & Logic
     if (btnPast) {
-      if (currentIndex === slides.length - 1) {
+      if (currentIndex === totalSlides - 1) {
         btnPast.innerHTML = "Jump to Now &uarr;";
       } else {
         btnPast.innerHTML = "&rarr; Back in time";
