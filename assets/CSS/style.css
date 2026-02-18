@@ -17,12 +17,12 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* FIX: Prevent horizontal wiggle and rubber-banding */
+/* FIX: Framing - Prevents side-to-side wiggle and rubber-banding */
 html, body { 
   max-width: 100vw; 
   height: 100%; 
   overflow-x: hidden; 
-  position: fixed; /* Locks the background frame */
+  position: relative;
   width: 100%;
 }
 
@@ -36,19 +36,16 @@ body {
   background-attachment: fixed;
   color: var(--text-main);
   line-height: 1.6;
-  -webkit-overflow-scrolling: touch;
 }
 
-/* FIX: Framing - The page-wrapper is now the primary scroll container */
 .page-wrapper {
   height: 100vh;
-  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 4rem; 
   overflow-y: auto;
   overflow-x: hidden; /* Strict horizontal lock */
-  overscroll-behavior: none; /* Stops the "pull past content" effect */
+  overscroll-behavior: none; /* Stops the "malleable" pull past content */
   scroll-behavior: smooth;
 }
 
@@ -131,12 +128,12 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  align-items: center; /* Center children */
 }
 
 .timeline-main-row {
   display: flex;
-  align-items: center;
-  gap: 1rem;
+  width: 100%;
   justify-content: center;
 }
 
@@ -154,6 +151,7 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   position: relative;
   transition: all 0.3s ease;
   overflow: hidden;
+  max-width: 600px;
 }
 
 .timeline-display:hover {
@@ -183,6 +181,15 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   font-weight: 600;
 }
 
+/* FIX: Centered Timeline Buttons */
+.timeline-nav-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+}
+
 .timeline-nav-btn {
   background: transparent;
   border: 1px solid var(--border-subtle);
@@ -195,6 +202,7 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   transition: 0.3s;
   white-space: nowrap;
   user-select: none;
+  min-width: 130px;
 }
 
 .timeline-nav-btn:hover {
@@ -304,8 +312,6 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   padding: 1.5rem 0;
   box-shadow: 0 0 30px rgba(78, 254, 121, 0.05);
   cursor: grab; 
-  /* FIX: Ensure horizontal touches move the carousel, not the page */
-  touch-action: pan-y; 
 }
 .logo-scroller:active { cursor: grabbing; }
 
@@ -465,15 +471,17 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
     border-left: none;
     border-right: none;
     padding: 1rem 0;
-    margin: 0; /* Removed negative margins that caused overflow */
+    margin: 0; /* REMOVED negative margin to fix wiggle */
     width: 100%;
   }
 
+  /* FIX: Explicit Centering for Timeline Buttons on Mobile */
   .timeline-nav-row {
-    display: flex !important;
-    flex-direction: row !important; 
-    justify-content: center !important;
-    gap: 10px !important;
-    width: 100% !important;
+    display: flex;
+    flex-direction: row; 
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    margin-top: 10px;
   }
 }
