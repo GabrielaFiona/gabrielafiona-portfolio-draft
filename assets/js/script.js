@@ -106,7 +106,7 @@
 
 
 // ----------------------------------------------------
-// UPDATED: Draggable Logo Scroller (Fixed Mobile Auto-Loop)
+// UPDATED: Draggable Logo Scroller (Fixed Mobile Auto-Scroll)
 // ----------------------------------------------------
 (function() {
   var slider = document.querySelector('.logo-scroller');
@@ -114,6 +114,7 @@
   
   if(!slider || !track) return;
 
+  // Clone nodes for seamless loop
   var items = Array.from(track.children);
   items.forEach(function(item) {
     var clone = item.cloneNode(true);
@@ -124,10 +125,11 @@
   var startX;
   var scrollLeft;
   var autoScrollSpeed = 0.8; 
-  var isAutoScrolling = true;
+  var autoScrollActive = true;
+  var resumeTimeout;
 
   function autoScroll() {
-    if(isAutoScrolling && !isDown) {
+    if(autoScrollActive && !isDown) {
       slider.scrollLeft += autoScrollSpeed;
       if(slider.scrollLeft >= track.scrollWidth / 2) {
          slider.scrollLeft = 0;
@@ -136,12 +138,19 @@
     requestAnimationFrame(autoScroll);
   }
 
+  // Start loop
   requestAnimationFrame(autoScroll);
 
-  function stopAuto() { isAutoScrolling = false; }
-  function startAuto() { isAutoScrolling = true; }
+  function startAuto() { 
+    clearTimeout(resumeTimeout);
+    autoScrollActive = true; 
+  }
+  
+  function stopAuto() { 
+    autoScrollActive = false; 
+  }
 
-  // Desktop Mouse Events
+  // Mouse Events
   slider.addEventListener('mousedown', function(e) {
     isDown = true;
     stopAuto();
@@ -170,7 +179,7 @@
     slider.scrollLeft = scrollLeft - walk;
   });
 
-  // Mobile Touch Events (Enhanced for Auto-Scroll persistence)
+  // Touch Events (Enhanced for mobile persistence)
   slider.addEventListener('touchstart', function(e) {
     isDown = true;
     stopAuto();
@@ -180,10 +189,10 @@
 
   slider.addEventListener('touchend', function() {
     isDown = false;
-    startAuto();
+    // Delay resumption slightly to feel more natural
+    resumeTimeout = setTimeout(startAuto, 500);
   });
 
-  // FIX: Resumes auto-scroll if the touch is interrupted or canceled
   slider.addEventListener('touchcancel', function() {
     isDown = false;
     startAuto();
