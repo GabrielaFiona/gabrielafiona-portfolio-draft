@@ -482,3 +482,56 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
     width: calc(100% + 2.5rem);
   }
 }
+
+/* --- UPDATED: Timeline Button Layout --- */
+
+/* Ensures buttons stay side-by-side and fit text */
+.timeline-main-row {
+  flex-direction: column; /* Stack the display and buttons vertically */
+  gap: 1.5rem;
+}
+
+.timeline-display {
+  width: 100%;
+  order: 1;
+}
+
+/* Container for the buttons to sit side-by-side under the bubble */
+.timeline-buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  order: 2;
+  width: 100%;
+}
+
+.timeline-nav-btn {
+  flex: 0 1 auto; /* Only take up as much space as the text needs */
+  width: auto;
+  min-width: 120px;
+}
+
+/* Force side-by-side even on mobile */
+@media (max-width: 850px) {
+  .timeline-main-row {
+    flex-direction: column !important;
+  }
+  
+  /* Create a flex row for buttons on mobile */
+  #tl-btn-left, #tl-btn-right {
+    display: inline-flex;
+    width: auto !important; 
+  }
+  
+  .timeline-main-row {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Wrap the two buttons in a div if necessary, 
+     but based on your HTML, we'll just force them to inline */
+  .timeline-nav-btn {
+    margin-bottom: 0;
+  }
+}
+    
