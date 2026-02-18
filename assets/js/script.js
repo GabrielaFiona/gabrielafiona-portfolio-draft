@@ -26,7 +26,7 @@
 })();
 
 // ----------------------------------------------------
-// UPDATED: Interactive Timeline (Looping Logic)
+// Interactive Timeline
 // ----------------------------------------------------
 (function() {
   var slides = Array.from(document.querySelectorAll(".timeline-slide"));
@@ -36,33 +36,25 @@
   
   if (!slides.length || !dotsContainer) return;
 
-  var currentIndex = 0; // 0 is the newest year (2026)
+  var currentIndex = 0; 
   var TOTAL_DOTS = 5;
 
-  // 1. Initial Render of Fixed Dots
   function initDots() {
     dotsContainer.innerHTML = "";
-    
-    // Create exactly 5 dots
     for (var i = 0; i < TOTAL_DOTS; i++) {
       var wrapper = document.createElement("div");
       wrapper.className = "t-dot-wrapper";
-      
       var dot = document.createElement("div");
       dot.className = "t-dot";
-      
       wrapper.appendChild(dot);
       dotsContainer.appendChild(wrapper);
     }
   }
 
-  // 2. Update UI based on Current Index
   function updateUI() {
-    // A. Show Correct Slide
     slides.forEach(function(s) { s.classList.remove("active"); });
     slides[currentIndex].classList.add("active");
 
-    // B. Handle Dots Logic
     var dotIndex;
     if (currentIndex === slides.length - 1) {
       dotIndex = 4;
@@ -76,7 +68,6 @@
       else d.classList.remove("active");
     });
 
-    // C. Handle Button Text & Logic
     if (btnPast) {
       if (currentIndex === slides.length - 1) {
         btnPast.innerHTML = "Jump to Now &uarr;";
@@ -89,7 +80,6 @@
   function goToSlide(index) {
     if (index < 0) index = 0;
     if (index >= slides.length) index = slides.length - 1;
-    
     currentIndex = index;
     updateUI();
   }
@@ -116,7 +106,7 @@
 
 
 // ----------------------------------------------------
-// UPDATED: Draggable Logo Scroller (Seamless Auto-Loop)
+// UPDATED: Draggable Logo Scroller (Fixed Mobile Auto-Loop)
 // ----------------------------------------------------
 (function() {
   var slider = document.querySelector('.logo-scroller');
@@ -124,7 +114,6 @@
   
   if(!slider || !track) return;
 
-  // Clone nodes for seamless looping
   var items = Array.from(track.children);
   items.forEach(function(item) {
     var clone = item.cloneNode(true);
@@ -140,8 +129,6 @@
   function autoScroll() {
     if(isAutoScrolling && !isDown) {
       slider.scrollLeft += autoScrollSpeed;
-      
-      // If we've scrolled past the first set of logos, reset to start
       if(slider.scrollLeft >= track.scrollWidth / 2) {
          slider.scrollLeft = 0;
       }
@@ -149,12 +136,12 @@
     requestAnimationFrame(autoScroll);
   }
 
-  // Start immediately
   requestAnimationFrame(autoScroll);
 
   function stopAuto() { isAutoScrolling = false; }
   function startAuto() { isAutoScrolling = true; }
 
+  // Desktop Mouse Events
   slider.addEventListener('mousedown', function(e) {
     isDown = true;
     stopAuto();
@@ -183,6 +170,7 @@
     slider.scrollLeft = scrollLeft - walk;
   });
 
+  // Mobile Touch Events (Enhanced for Auto-Scroll persistence)
   slider.addEventListener('touchstart', function(e) {
     isDown = true;
     stopAuto();
@@ -191,6 +179,12 @@
   }, { passive: true });
 
   slider.addEventListener('touchend', function() {
+    isDown = false;
+    startAuto();
+  });
+
+  // FIX: Resumes auto-scroll if the touch is interrupted or canceled
+  slider.addEventListener('touchcancel', function() {
     isDown = false;
     startAuto();
   });
