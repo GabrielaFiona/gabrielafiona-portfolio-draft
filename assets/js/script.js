@@ -63,14 +63,10 @@
     slides[currentIndex].classList.add("active");
 
     // B. Handle Dots Logic
-    // Logic: Dots 0-3 loop left to right. Dot 4 is reserved ONLY for the very last slide.
     var dotIndex;
-    
     if (currentIndex === slides.length - 1) {
-      // If we are at the very last slide (2016), light up the 5th dot
       dotIndex = 4;
     } else {
-      // Otherwise loop through 0, 1, 2, 3
       dotIndex = currentIndex % 4;
     }
 
@@ -91,7 +87,6 @@
   }
 
   function goToSlide(index) {
-    // Bounds check
     if (index < 0) index = 0;
     if (index >= slides.length) index = slides.length - 1;
     
@@ -99,7 +94,6 @@
     updateUI();
   }
 
-  // Button Listeners
   if(btnFuture) {
     btnFuture.addEventListener("click", function() {
       goToSlide(currentIndex - 1);
@@ -108,7 +102,6 @@
 
   if(btnPast) {
     btnPast.addEventListener("click", function() {
-      // If we are at the end, jump to start (0)
       if (currentIndex === slides.length - 1) {
         goToSlide(0);
       } else {
@@ -117,14 +110,13 @@
     });
   }
 
-  // Initialize
   initDots();
   updateUI();
 })();
 
 
 // ----------------------------------------------------
-// UPDATED: Draggable Logo Scroller (Interactive + Auto)
+// UPDATED: Draggable Logo Scroller (Seamless Auto-Loop)
 // ----------------------------------------------------
 (function() {
   var slider = document.querySelector('.logo-scroller');
@@ -132,33 +124,37 @@
   
   if(!slider || !track) return;
 
+  // Clone nodes for seamless looping
+  var items = Array.from(track.children);
+  items.forEach(function(item) {
+    var clone = item.cloneNode(true);
+    track.appendChild(clone);
+  });
+
   var isDown = false;
   var startX;
   var scrollLeft;
-  var autoScrollSpeed = 0.8; // px per frame
+  var autoScrollSpeed = 0.8; 
   var isAutoScrolling = true;
-  var animationId;
 
-  // Auto Scroll Function
   function autoScroll() {
     if(isAutoScrolling && !isDown) {
       slider.scrollLeft += autoScrollSpeed;
-      // Loop check (simple reset for effect)
-      if(slider.scrollLeft >= (track.scrollWidth - slider.clientWidth)) {
-         // Optional: logic to loop smoothly could go here
+      
+      // If we've scrolled past the first set of logos, reset to start
+      if(slider.scrollLeft >= track.scrollWidth / 2) {
+         slider.scrollLeft = 0;
       }
     }
-    animationId = requestAnimationFrame(autoScroll);
+    requestAnimationFrame(autoScroll);
   }
 
-  // Start Auto Scroll
-  animationId = requestAnimationFrame(autoScroll);
+  // Start immediately
+  requestAnimationFrame(autoScroll);
 
-  // Stop auto scroll on interaction
   function stopAuto() { isAutoScrolling = false; }
   function startAuto() { isAutoScrolling = true; }
 
-  // Mouse/Touch Events
   slider.addEventListener('mousedown', function(e) {
     isDown = true;
     stopAuto();
@@ -183,11 +179,10 @@
     if(!isDown) return;
     e.preventDefault();
     var x = e.pageX - slider.offsetLeft;
-    var walk = (x - startX) * 2; // Scroll-fast multiplier
+    var walk = (x - startX) * 2; 
     slider.scrollLeft = scrollLeft - walk;
   });
 
-  // Touch Support
   slider.addEventListener('touchstart', function(e) {
     isDown = true;
     stopAuto();
@@ -206,7 +201,6 @@
     var walk = (x - startX) * 2;
     slider.scrollLeft = scrollLeft - walk;
   }, { passive: true });
-
 })();
 
 
@@ -225,7 +219,6 @@
   var autoInterval = null;
   var AUTO_DELAY = 6000;
 
-  // Create dots
   slides.forEach(function (_, index) {
     var dot = document.createElement("button");
     dot.className = "carousel-dot" + (index === 0 ? " is-active" : "");
