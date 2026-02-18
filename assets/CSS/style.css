@@ -534,4 +534,44 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
     margin-bottom: 0;
   }
 }
-    
+
+/* --- NEW: Timeline Button Layout Fixes --- */
+
+.timeline-nav-row {
+  display: flex !important;
+  flex-direction: row !important; /* Forces side-by-side */
+  justify-content: center !important;
+  gap: 15px !important;
+  width: 100% !important;
+  margin: 20px 0 !important;
+  padding: 0 10px;
+}
+
+.timeline-nav-btn {
+  flex: 0 1 auto !important; /* Button only as wide as text */
+  width: auto !important;
+  min-width: 110px !important;
+  padding: 10px 15px !important;
+  font-size: 0.9rem !important;
+  white-space: nowrap !important; /* Keeps text on one line */
+}
+
+/* Ensure the display bubble doesn't try to float things side-by-side anymore */
+.timeline-main-row {
+  display: block !important;
+  width: 100% !important;
+}
+
+.timeline-display {
+  width: 100% !important;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+@media (max-width: 850px) {
+  /* Override any mobile stacking for these specific buttons */
+  .timeline-nav-row {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+  }
+}
