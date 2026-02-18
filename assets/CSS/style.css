@@ -17,7 +17,14 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html, body { max-width: 100%; height: 100%; overflow-x: hidden; overflow-y: hidden; }
+/* FIX: Prevent horizontal wiggle and rubber-banding */
+html, body { 
+  max-width: 100vw; 
+  height: 100%; 
+  overflow-x: hidden; 
+  position: fixed; /* Locks the background frame */
+  width: 100%;
+}
 
 body {
   font-family: "Outfit", sans-serif;
@@ -29,15 +36,19 @@ body {
   background-attachment: fixed;
   color: var(--text-main);
   line-height: 1.6;
+  -webkit-overflow-scrolling: touch;
 }
 
+/* FIX: Framing - The page-wrapper is now the primary scroll container */
 .page-wrapper {
   height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 4rem; /* Reduced global gap */
+  gap: 4rem; 
   overflow-y: auto;
-  overscroll-behavior-y: contain;
+  overflow-x: hidden; /* Strict horizontal lock */
+  overscroll-behavior: none; /* Stops the "pull past content" effect */
   scroll-behavior: smooth;
 }
 
@@ -49,11 +60,9 @@ body {
 }
 
 .intro-header-bg {
-  /* REMOVED: The dark overlay gradient to brighten image */
   background: url("https://raw.githubusercontent.com/GabrielaFiona/gabrielafiona-portfolio-draft/c2a5e0257ac05a2a30d257e1db76544a3e6b79a8/assets/img/backgrndblutri.png");
   background-size: cover;
-  background-position: center bottom; /* Anchor image to bottom so it aligns with card */
-  /* UPDATED: Adjusted padding to pull content up and end bg before next section */
+  background-position: center bottom; 
   padding: 3rem 2rem 14rem; 
   text-align: center;
 }
@@ -63,9 +72,8 @@ body {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
   gap: 3rem;
   align-items: center;
-  /* UPDATED: Negative margin pulls card up */
   margin-top: -12rem; 
-  background: rgba(11, 11, 25, 0.85); /* Slightly darker backing for readability */
+  background: rgba(11, 11, 25, 0.85); 
   backdrop-filter: blur(10px);
   padding: 3rem;
   border-radius: var(--radius-xl);
@@ -115,7 +123,7 @@ body {
 h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
 h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 
-/* 2. TIMELINE SECTION (UPDATED) */
+/* 2. TIMELINE SECTION */
 .timeline-wrapper {
   position: relative;
   max-width: 900px;
@@ -195,14 +203,13 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   background: rgba(76, 125, 255, 0.1);
 }
 
-/* Timeline Dots Track */
 .timeline-track-container {
   width: 100%;
   max-width: 500px;
   margin: 0 auto;
   position: relative;
   padding-top: 15px;
-  height: 60px; /* Space for dots + text */
+  height: 60px; 
 }
 
 .timeline-line {
@@ -224,7 +231,6 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 
 .t-dot-wrapper {
   text-align: center;
-  /* Dots are purely visual indicators in this logic, removed pointer */
   cursor: default;
   width: 40px; 
   transition: 0.3s;
@@ -240,7 +246,6 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   transition: 0.3s;
 }
 
-/* Show dot active state */
 .t-dot-wrapper.active .t-dot {
   background: var(--accent);
   border-color: var(--accent);
@@ -289,23 +294,24 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 .learning-info p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.4; }
 
 
-/* 4. LOGO SCROLLER (INTERACTIVE) */
+/* 4. LOGO SCROLLER */
 .logo-scroller {
   position: relative;
-  overflow: hidden; /* JS handles scroll */
+  overflow: hidden; 
   border-radius: 18px;
   border: 1px solid var(--border-subtle);
   background: rgba(5, 5, 16, 0.6);
   padding: 1.5rem 0;
   box-shadow: 0 0 30px rgba(78, 254, 121, 0.05);
-  cursor: grab; /* Indicates draggable */
+  cursor: grab; 
+  /* FIX: Ensure horizontal touches move the carousel, not the page */
+  touch-action: pan-y; 
 }
 .logo-scroller:active { cursor: grabbing; }
 
 .logo-track {
   display: flex;
   align-items: center;
-  /* UPDATED: Reduced gap */
   gap: 2.5rem; 
   white-space: nowrap;
   padding-left: 2rem;
@@ -320,7 +326,6 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   display: flex;
   align-items: center;
   justify-content: center;
-  /* UPDATED: Allow clicks on the anchor tag */
   pointer-events: auto; 
 }
 
@@ -330,7 +335,6 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   object-fit: contain;
   opacity: 0.8;
   transition: opacity 0.3s;
-  /* UPDATED: Prevent image dragging so link works */
   pointer-events: none; 
 }
 
@@ -454,124 +458,22 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   .intro-photo { max-width: 220px; margin-bottom: 1.5rem; }
   .carousel-nav { display: none; }
   .carousel-visual img { height: 250px; }
-  body { background-size: 100% 100%; }
   
-  /* UPDATED: Timeline Mobile Stack */
-  .timeline-main-row { 
-    flex-wrap: wrap; 
-  }
-  .timeline-display {
-    width: 100%;
-    order: 1; /* Content first */
-  }
-  .timeline-nav-btn { 
-    width: 100%; /* Stack fully */
-    order: 2; /* Buttons below */
-    justify-content: center;
-    display: flex;
-    margin-bottom: 0.5rem;
-  }
-  
-  /* UPDATED: Logo edge-to-edge on mobile */
+  /* FIX: Logo edge-to-edge on mobile without breaking frame */
   .logo-scroller {
     border-radius: 0;
     border-left: none;
     border-right: none;
     padding: 1rem 0;
-    margin: 0 -1.25rem; /* Negative margin to pull to edges of screen */
-    width: calc(100% + 2.5rem);
+    margin: 0; /* Removed negative margins that caused overflow */
+    width: 100%;
   }
-}
 
-/* --- UPDATED: Timeline Button Layout --- */
-
-/* Ensures buttons stay side-by-side and fit text */
-.timeline-main-row {
-  flex-direction: column; /* Stack the display and buttons vertically */
-  gap: 1.5rem;
-}
-
-.timeline-display {
-  width: 100%;
-  order: 1;
-}
-
-/* Container for the buttons to sit side-by-side under the bubble */
-.timeline-buttons-container {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  order: 2;
-  width: 100%;
-}
-
-.timeline-nav-btn {
-  flex: 0 1 auto; /* Only take up as much space as the text needs */
-  width: auto;
-  min-width: 120px;
-}
-
-/* Force side-by-side even on mobile */
-@media (max-width: 850px) {
-  .timeline-main-row {
-    flex-direction: column !important;
-  }
-  
-  /* Create a flex row for buttons on mobile */
-  #tl-btn-left, #tl-btn-right {
-    display: inline-flex;
-    width: auto !important; 
-  }
-  
-  .timeline-main-row {
-    display: flex;
-    align-items: center;
-  }
-  
-  /* Wrap the two buttons in a div if necessary, 
-     but based on your HTML, we'll just force them to inline */
-  .timeline-nav-btn {
-    margin-bottom: 0;
-  }
-}
-
-/* --- NEW: Timeline Button Layout Fixes --- */
-
-.timeline-nav-row {
-  display: flex !important;
-  flex-direction: row !important; /* Forces side-by-side */
-  justify-content: center !important;
-  gap: 15px !important;
-  width: 100% !important;
-  margin: 20px 0 !important;
-  padding: 0 10px;
-}
-
-.timeline-nav-btn {
-  flex: 0 1 auto !important; /* Button only as wide as text */
-  width: auto !important;
-  min-width: 110px !important;
-  padding: 10px 15px !important;
-  font-size: 0.9rem !important;
-  white-space: nowrap !important; /* Keeps text on one line */
-}
-
-/* Ensure the display bubble doesn't try to float things side-by-side anymore */
-.timeline-main-row {
-  display: block !important;
-  width: 100% !important;
-}
-
-.timeline-display {
-  width: 100% !important;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-@media (max-width: 850px) {
-  /* Override any mobile stacking for these specific buttons */
   .timeline-nav-row {
     display: flex !important;
-    flex-wrap: nowrap !important;
+    flex-direction: row !important; 
+    justify-content: center !important;
+    gap: 10px !important;
+    width: 100% !important;
   }
 }
