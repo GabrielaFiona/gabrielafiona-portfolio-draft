@@ -203,33 +203,30 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   font-weight: 700;
 }
 
-/* UPDATED: Timeline Bullet Point Tags (Removed pill styling, stacked like bullet points) */
-.timeline-tags {
-  display: flex;
-  flex-direction: column; /* Stacks them */
-  align-items: center; /* Keeps them centered with your text */
-  gap: 0.4rem;
-  margin-top: 1rem; /* Space between paragraph and list */
-  margin-bottom: 0;
+/* UPDATED: Classic Bullet Points for Timeline - No bubbles or pills */
+.timeline-bullets {
+  list-style-type: none;
+  margin: 1.2rem auto 0 auto;
+  padding-left: 0;
+  display: inline-block; /* Keeps the block centered in your layout */
+  text-align: left; /* Ensures the text aligns beautifully like a list */
+  color: var(--text-muted);
+  font-size: 0.95rem;
 }
 
-.t-tag {
-  font-size: 0.9rem; /* Slightly larger text now that it has room */
-  padding: 0;
-  background: transparent;
-  border: none;
-  color: var(--text-muted); /* Softer secondary color */
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  letter-spacing: 0.03em;
+.timeline-bullets li {
+  position: relative;
+  padding-left: 1.2rem;
+  margin-bottom: 0.4rem;
 }
 
-.t-tag::before {
+.timeline-bullets li::before {
   content: '•';
-  color: var(--accent); /* Keeps the blue dot */
+  color: var(--accent);
+  position: absolute;
+  left: 0;
   font-size: 1.2rem;
-  line-height: 0;
+  line-height: 1;
 }
 
 .timeline-nav-row {
