@@ -2,8 +2,8 @@
   --bg: #050510;
   --bg-soft: #0b0b19;
   
-  /* Brand Colors */
-  --accent: #4c7dff;        /* Blue */
+  /* Brand Colors - Updated --accent to match your exact brand hex! */
+  --accent: #4E7BFE;        /* Blue */
   --accent-purple: #8F55E2; /* Purple */
   --accent-green: #4EFE79;  /* Green */
   
@@ -104,6 +104,7 @@ body {
   border: 3px solid rgba(255,255,255,0.1);
 }
 
+/* Global Eyebrow style, overridden in specific colored sections below */
 .eyebrow { 
   font-size: 0.85rem; 
   text-transform: uppercase; 
@@ -270,22 +271,26 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   width: 100%;
 }
 
-/* Emphasis for the Timeline (Experience) Section */
+/* Emphasis for the Timeline (Experience) Section - BLUE THEME */
 .resume-section {
-  background: var(--bg-soft);
+  background: linear-gradient(180deg, var(--bg-soft) 0%, rgba(11, 11, 25, 0.6) 100%);
   border-radius: var(--radius-xl);
-  padding: 2.5rem;
-  border: 1px solid var(--border-subtle);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(143, 85, 226, 0.15); /* Subtle purple inner glow to match your brand */
+  padding: 3rem;
+  border: 1px solid rgba(78, 123, 254, 0.2);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(78, 123, 254, 0.15); 
 }
+.resume-section .section-header h2 { color: var(--accent); }
+.resume-section .eyebrow { background: var(--accent); -webkit-background-clip: text; color: transparent; }
 
-/* De-emphasized, subtle style for the Learning Section */
+/* De-emphasized, subtle style for the Learning Section - GREEN THEME */
 .learning-section {
-  background: rgba(255, 255, 255, 0.015);
+  background: linear-gradient(180deg, rgba(78, 254, 121, 0.02) 0%, rgba(78, 254, 121, 0.06) 100%);
   border-radius: var(--radius-xl);
-  padding: 2rem;
-  border: 1px dashed rgba(255, 255, 255, 0.05); /* Very faint dashed border to make it feel like an add-on */
+  padding: 3rem;
+  border: 1px solid rgba(78, 254, 121, 0.15); 
 }
+.learning-section .section-header h2 { color: var(--accent-green); }
+.learning-section .eyebrow { background: var(--accent-green); -webkit-background-clip: text; color: transparent; }
 
 @media (min-width: 851px) {
   .desktop-row {
@@ -316,8 +321,8 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 }
 
 .learning-card {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid var(--border-subtle);
+  background: rgba(5, 5, 16, 0.4); /* Darkened for contrast against the green background */
+  border: 1px solid rgba(78, 254, 121, 0.2);
   border-radius: 16px;
   padding: 1.5rem;
   display: flex;
@@ -328,14 +333,14 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 
 .learning-card:hover {
   transform: translateY(-3px);
-  background: rgba(255,255,255,0.05);
-  border-color: var(--accent-purple);
+  background: rgba(5, 5, 16, 0.7);
+  border-color: var(--accent-green);
 }
 
 .learning-icon {
   font-size: 1.5rem;
-  color: var(--accent-purple);
-  background: rgba(143, 85, 226, 0.1);
+  color: var(--accent-green);
+  background: rgba(78, 254, 121, 0.1);
   width: 40px;
   height: 40px;
   display: flex;
@@ -344,19 +349,28 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   border-radius: 50%;
 }
 
-.learning-info h3 { font-size: 1.1rem; margin-bottom: 0.2rem; }
-.learning-info p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.4; }
+.learning-info h3 { font-size: 1.1rem; margin-bottom: 0.2rem; color: #fff; }
+.learning-info p { font-size: 0.9rem; color: #cfcfdf; line-height: 1.4; }
 
 
-/* 4. LOGO SCROLLER */
+/* 4. LOGO SCROLLER SECTION - BLUE THEME */
+.logo-section {
+  background: linear-gradient(135deg, rgba(78, 123, 254, 0.03), rgba(143, 85, 226, 0.05));
+  border-radius: var(--radius-xl);
+  padding: 3rem;
+  border: 1px solid rgba(78, 123, 254, 0.15);
+  box-shadow: inset 0 0 0 1px rgba(78, 123, 254, 0.05);
+}
+.logo-section .section-header h2 { color: var(--accent); }
+.logo-section .eyebrow { background: var(--accent); -webkit-background-clip: text; color: transparent; }
+
 .logo-scroller {
   position: relative;
   overflow: hidden; 
   border-radius: 18px;
-  border: 1px solid var(--border-subtle);
-  background: rgba(5, 5, 16, 0.6);
+  border: none;
+  background: transparent;
   padding: 1.5rem 0;
-  box-shadow: 0 0 30px rgba(78, 254, 121, 0.05);
   cursor: grab; 
 }
 .logo-scroller:active { cursor: grabbing; }
@@ -390,14 +404,23 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   pointer-events: none; 
 }
 
-/* 5. PROJECT LIBRARY CAROUSEL */
+/* 5. PROJECT LIBRARY CAROUSEL - PURPLE THEME */
+.work-section {
+  background: linear-gradient(180deg, rgba(143, 85, 226, 0.03), rgba(143, 85, 226, 0.08));
+  border-radius: var(--radius-xl);
+  padding: 3rem;
+  border: 1px solid rgba(143, 85, 226, 0.2);
+}
+.work-section .section-header h2 { color: #fff; }
+.work-section .eyebrow { background: var(--accent-purple); -webkit-background-clip: text; color: transparent; }
+
 .carousel-shell { 
-  background: var(--bg-soft); 
+  background: rgba(5, 5, 16, 0.6); /* Darkened for contrast against the purple wrapper */
   border-radius: var(--radius-xl); 
   padding: 2.5rem; 
-  border: 1px solid var(--border-subtle); 
+  border: 1px solid rgba(143, 85, 226, 0.3); 
   position: relative; 
-  box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 0 1px rgba(143, 85, 226, 0.1);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(143, 85, 226, 0.1);
 }
 
 .carousel-header {
@@ -511,6 +534,11 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   .carousel-nav { display: none; }
   .carousel-visual img { height: 250px; }
   
+  /* Prevent inner padding from squeezing mobile layout too much */
+  .resume-section, .learning-section, .logo-section, .work-section {
+    padding: 1.5rem;
+  }
+  
   /* FIX: Extra room at bottom of footer for mobile */
   .mini-footer {
     padding-bottom: 9rem; 
@@ -522,7 +550,7 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
     border-left: none;
     border-right: none;
     padding: 1rem 0;
-    margin: 0; /* REMOVED negative margin to fix wiggle */
+    margin: 0; 
     width: 100%;
   }
 
