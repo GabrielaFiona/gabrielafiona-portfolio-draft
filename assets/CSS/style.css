@@ -2,7 +2,7 @@
   --bg: #050510;
   --bg-soft: #0b0b19;
   
-  /* Brand Colors */
+  /* Brand Colors - Updated --accent to match your exact brand hex! */
   --accent: #4E7BFE;        /* Blue */
   --accent-purple: #8F55E2; /* Purple */
   --accent-green: #4EFE79;  /* Green */
@@ -121,7 +121,7 @@ body {
 h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
 h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 
-/* UPDATED: Title Glow Effect for colored sections 
+/* Title Glow Effect for colored sections 
    Layer 1: Dark, sharp shadow for edge definition and readability
    Layer 2: Soft white ambient glow behind the dark edge
 */
@@ -211,10 +211,11 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   width: 100%;
 }
 
+/* UPDATED: Nav buttons no longer have a white background, kept the blue glow */
 .timeline-nav-btn {
-  background: #ffffff;
-  border: 1px solid #ffffff;
-  color: #000000;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
   padding: 0.8rem 1.2rem;
   border-radius: 50px;
   cursor: pointer;
@@ -225,13 +226,13 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   white-space: nowrap;
   user-select: none;
   min-width: 130px;
-  box-shadow: 0 0 15px rgba(78, 123, 254, 0.6);
+  box-shadow: 0 0 15px rgba(78, 123, 254, 0.5); /* Blue background glow */
 }
 
 .timeline-nav-btn:hover {
   border-color: var(--accent);
   color: #ffffff;
-  background: var(--accent);
+  background: rgba(78, 123, 254, 0.15);
   box-shadow: 0 0 20px rgba(78, 123, 254, 0.9);
 }
 
@@ -313,22 +314,41 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 }
 .learning-section .eyebrow { background: var(--accent-green); -webkit-background-clip: text; color: transparent; }
 
+/* UPDATED: Screen Fit for Desktop */
 @media (min-width: 851px) {
   .desktop-row {
     flex-direction: row;
     align-items: flex-start;
-    gap: 3rem;
+    gap: 2rem; /* Shrunk gap for tighter fit */
   }
   .resume-section {
     flex: 1.6; 
     min-width: 0; 
+    padding: 2rem; /* Reduced inner padding */
   }
   .learning-section {
     flex: 1; 
     min-width: 0;
+    padding: 2rem; /* Reduced inner padding */
+  }
+  .timeline-wrapper {
+    gap: 1.25rem; /* Shrunk space between elements */
+    margin-top: 1rem;
+  }
+  .timeline-display {
+    padding: 1.5rem; /* Tighter timeline card */
+    min-height: 180px; /* Reduced min-height so it doesn't force a large box */
   }
   .learning-grid {
     grid-template-columns: 1fr; 
+    margin-top: 1rem;
+    gap: 1rem; /* Shrunk space between learning cards */
+  }
+  .learning-card {
+    padding: 1.25rem; /* Tighter inner card padding */
+  }
+  h2 {
+    font-size: 1.8rem; /* Slightly smaller titles on desktop to save vertical room */
   }
 }
 
@@ -413,7 +433,7 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   pointer-events: auto; 
 }
 
-/* UPDATED: Logo Lighting Effect
+/* Logo Lighting Effect
    Layer 1: Dark drop-shadow anchors the logo for clear visibility
    Layer 2: Lighter blue drop-shadow provides the ambient glow
 */
@@ -549,6 +569,22 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 .fb-icon:hover { opacity: 1; filter: drop-shadow(0 0 5px var(--accent)); }
 
 /* RESPONSIVE */
+/* UPDATED: Shrinking the Carousel and outer padding for Desktop Fit */
+@media (min-width: 851px) {
+  .work-section {
+    padding: 2rem; /* Reduced outer padding */
+  }
+  .carousel-shell {
+    padding: 1.5rem 2rem; /* Tightened inner shell padding */
+  }
+  .carousel-visual img {
+    height: 250px; /* Reduced image height so the carousel fits entirely on a standard laptop screen */
+  }
+  .carousel-item {
+    gap: 1.5rem; /* Shrunk spacing between image and text */
+  }
+}
+
 @media (max-width: 850px) {
   .intro-inner, .resume-grid, .carousel-item { grid-template-columns: 1fr; text-align: center; }
   .intro-photo { max-width: 220px; margin-bottom: 1.5rem; }
