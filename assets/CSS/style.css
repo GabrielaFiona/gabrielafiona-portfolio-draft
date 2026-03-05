@@ -261,7 +261,7 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 }
 
 /* ---------------------------------------------------- */
-/* NEW FIX: DESKTOP SPATIAL LAYOUT                      */
+/* NEW FIX: DESKTOP SPATIAL LAYOUT & SECTION SEPARATION */
 /* ---------------------------------------------------- */
 .desktop-row {
   display: flex;
@@ -270,19 +270,40 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   width: 100%;
 }
 
+/* Emphasis for the Timeline (Experience) Section */
+.resume-section {
+  background: var(--bg-soft);
+  border-radius: var(--radius-xl);
+  padding: 2.5rem;
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(143, 85, 226, 0.15); /* Subtle purple inner glow to match your brand */
+}
+
+/* De-emphasized, subtle style for the Learning Section */
+.learning-section {
+  background: rgba(255, 255, 255, 0.015);
+  border-radius: var(--radius-xl);
+  padding: 2rem;
+  border: 1px dashed rgba(255, 255, 255, 0.05); /* Very faint dashed border to make it feel like an add-on */
+}
+
 @media (min-width: 851px) {
   .desktop-row {
     flex-direction: row;
-    align-items: stretch;
-    gap: 4rem;
+    align-items: flex-start; /* Prevents them from forcing equal heights if one is shorter */
+    gap: 3rem;
   }
-  .desktop-row > section {
-    flex: 1;
-    min-width: 0; /* Prevents flex children from blowing out container width */
+  .resume-section {
+    flex: 1.6; /* Gives the timeline ~60% of the screen space */
+    min-width: 0; 
   }
-  /* Adjust the learning grid to flow beautifully in a half-width column */
+  .learning-section {
+    flex: 1; /* Gives the learning section ~40% of the screen space */
+    min-width: 0;
+  }
+  /* Stacks the learning cards beautifully in their new narrower sidebar home */
   .learning-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: 1fr; 
   }
 }
 
