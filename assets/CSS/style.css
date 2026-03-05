@@ -70,12 +70,14 @@ body {
   gap: 3rem;
   align-items: center;
   margin-top: -12rem; 
-  background: rgba(11, 11, 25, 0.85); 
+  /* UPDATED: Gradient Border */
+  background: linear-gradient(rgba(11, 11, 25, 0.85), rgba(11, 11, 25, 0.85)) padding-box,
+              linear-gradient(135deg, var(--accent), var(--accent-purple), var(--accent-green)) border-box;
+  border: 3px solid transparent;
   backdrop-filter: blur(10px);
   padding: 3rem;
   border-radius: var(--radius-xl);
-  border: 1px solid var(--border-subtle);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5), inset 0 0 0 1px rgba(143, 85, 226, 0.2);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
 }
 
 .intro-photo {
@@ -203,7 +205,7 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   font-weight: 700;
 }
 
-/* UPDATED: Classic Bullet Points for Timeline - No bubbles or pills */
+/* Timeline Bullet Point Tags (Removed pill styling, stacked like bullet points) */
 .timeline-bullets {
   list-style-type: none;
   margin: 1.2rem auto 0 auto;
