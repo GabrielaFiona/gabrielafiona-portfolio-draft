@@ -260,6 +260,31 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   transform: scale(1.3);
 }
 
+/* ---------------------------------------------------- */
+/* NEW FIX: DESKTOP SPATIAL LAYOUT                      */
+/* ---------------------------------------------------- */
+.desktop-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  width: 100%;
+}
+
+@media (min-width: 851px) {
+  .desktop-row {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 4rem;
+  }
+  .desktop-row > section {
+    flex: 1;
+    min-width: 0; /* Prevents flex children from blowing out container width */
+  }
+  /* Adjust the learning grid to flow beautifully in a half-width column */
+  .learning-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
 
 /* 3. CURRENTLY LEARNING */
 .learning-grid {
@@ -464,6 +489,11 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   .intro-photo { max-width: 220px; margin-bottom: 1.5rem; }
   .carousel-nav { display: none; }
   .carousel-visual img { height: 250px; }
+  
+  /* FIX: Extra room at bottom of footer for mobile */
+  .mini-footer {
+    padding-bottom: 9rem; 
+  }
   
   /* FIX: Logo edge-to-edge on mobile without breaking frame */
   .logo-scroller {
