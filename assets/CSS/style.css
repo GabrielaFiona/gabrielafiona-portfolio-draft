@@ -121,6 +121,14 @@ body {
 h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
 h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 
+/* Title Glow Effect for colored sections */
+.resume-section .section-header h2,
+.learning-section .section-header h2,
+.logo-section .section-header h2,
+.work-section .section-header h2 {
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+}
+
 /* 2. TIMELINE SECTION */
 .timeline-wrapper {
   position: relative;
@@ -156,8 +164,8 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 }
 
 .timeline-display:hover {
-  background: rgba(78, 254, 121, 0.03);
-  border-color: var(--accent-green);
+  background: rgba(78, 123, 254, 0.04);
+  border-color: var(--accent);
 }
 
 .timeline-slide {
@@ -173,13 +181,13 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 
 .timeline-year-label {
   display: inline-block;
-  background: rgba(255,255,255,0.1);
+  background: #ffffff;
   padding: 0.2rem 0.8rem;
   border-radius: 20px;
   font-size: 0.8rem;
   margin-bottom: 0.5rem;
-  color: var(--accent-green);
-  font-weight: 600;
+  color: var(--accent);
+  font-weight: 700;
 }
 
 /* FIX: Centered Timeline Buttons */
@@ -192,24 +200,27 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 }
 
 .timeline-nav-btn {
-  background: transparent;
-  border: 1px solid var(--border-subtle);
-  color: var(--text-muted);
+  background: #ffffff;
+  border: 1px solid #ffffff;
+  color: #000000;
   padding: 0.8rem 1.2rem;
   border-radius: 50px;
   cursor: pointer;
   font-family: "Outfit", sans-serif;
   font-size: 0.85rem;
+  font-weight: 600;
   transition: 0.3s;
   white-space: nowrap;
   user-select: none;
   min-width: 130px;
+  box-shadow: 0 0 15px rgba(78, 123, 254, 0.6);
 }
 
 .timeline-nav-btn:hover {
   border-color: var(--accent);
-  color: #fff;
-  background: rgba(76, 125, 255, 0.1);
+  color: #ffffff;
+  background: var(--accent);
+  box-shadow: 0 0 20px rgba(78, 123, 254, 0.9);
 }
 
 .timeline-track-container {
@@ -353,13 +364,13 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 .learning-info p { font-size: 0.9rem; color: #cfcfdf; line-height: 1.4; }
 
 
-/* 4. LOGO SCROLLER SECTION - BLUE THEME */
+/* 4. LOGO SCROLLER SECTION - LIGHTER BLUE THEME */
 .logo-section {
-  background: linear-gradient(135deg, rgba(78, 123, 254, 0.03), rgba(143, 85, 226, 0.05));
+  background: linear-gradient(135deg, rgba(78, 123, 254, 0.08), rgba(78, 123, 254, 0.15));
   border-radius: var(--radius-xl);
   padding: 3rem;
-  border: 1px solid rgba(78, 123, 254, 0.15);
-  box-shadow: inset 0 0 0 1px rgba(78, 123, 254, 0.05);
+  border: 1px solid rgba(78, 123, 254, 0.3);
+  box-shadow: inset 0 0 0 1px rgba(78, 123, 254, 0.1);
 }
 .logo-section .section-header h2 { color: var(--accent); }
 .logo-section .eyebrow { background: var(--accent); -webkit-background-clip: text; color: transparent; }
@@ -399,9 +410,10 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
-  opacity: 0.8;
-  transition: opacity 0.3s;
+  opacity: 0.9;
+  transition: opacity 0.3s, filter 0.3s;
   pointer-events: none; 
+  filter: drop-shadow(0 0 8px rgba(78, 123, 254, 0.7)); /* Light blue glow added to logos */
 }
 
 /* 5. PROJECT LIBRARY CAROUSEL - PURPLE THEME */
@@ -411,7 +423,7 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   padding: 3rem;
   border: 1px solid rgba(143, 85, 226, 0.2);
 }
-.work-section .section-header h2 { color: #fff; }
+.work-section .section-header h2 { color: var(--accent-purple); }
 .work-section .eyebrow { background: var(--accent-purple); -webkit-background-clip: text; color: transparent; }
 
 .carousel-shell { 
