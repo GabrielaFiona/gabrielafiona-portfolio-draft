@@ -203,6 +203,36 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   font-weight: 700;
 }
 
+/* NEW: Timeline Bullet Point Tags */
+.timeline-tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+  margin-top: 0.2rem;
+}
+
+.t-tag {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.8rem;
+  background: rgba(78, 123, 254, 0.08);
+  border: 1px solid rgba(78, 123, 254, 0.3);
+  border-radius: 50px;
+  color: var(--text-main);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  letter-spacing: 0.03em;
+}
+
+.t-tag::before {
+  content: '•';
+  color: var(--accent); /* Blue dot matching the section theme */
+  font-size: 1.2rem;
+  line-height: 0;
+}
+
 .timeline-nav-row {
   display: flex;
   flex-direction: row;
@@ -211,7 +241,6 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
   width: 100%;
 }
 
-/* UPDATED: Nav buttons no longer have a white background, kept the blue glow */
 .timeline-nav-btn {
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -314,41 +343,41 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 }
 .learning-section .eyebrow { background: var(--accent-green); -webkit-background-clip: text; color: transparent; }
 
-/* UPDATED: Screen Fit for Desktop */
+/* Screen Fit for Desktop */
 @media (min-width: 851px) {
   .desktop-row {
     flex-direction: row;
     align-items: flex-start;
-    gap: 2rem; /* Shrunk gap for tighter fit */
+    gap: 2rem; 
   }
   .resume-section {
     flex: 1.6; 
     min-width: 0; 
-    padding: 2rem; /* Reduced inner padding */
+    padding: 2rem; 
   }
   .learning-section {
     flex: 1; 
     min-width: 0;
-    padding: 2rem; /* Reduced inner padding */
+    padding: 2rem; 
   }
   .timeline-wrapper {
-    gap: 1.25rem; /* Shrunk space between elements */
+    gap: 1.25rem; 
     margin-top: 1rem;
   }
   .timeline-display {
-    padding: 1.5rem; /* Tighter timeline card */
-    min-height: 180px; /* Reduced min-height so it doesn't force a large box */
+    padding: 1.5rem; 
+    min-height: 180px; 
   }
   .learning-grid {
     grid-template-columns: 1fr; 
     margin-top: 1rem;
-    gap: 1rem; /* Shrunk space between learning cards */
+    gap: 1rem; 
   }
   .learning-card {
-    padding: 1.25rem; /* Tighter inner card padding */
+    padding: 1.25rem; 
   }
   h2 {
-    font-size: 1.8rem; /* Slightly smaller titles on desktop to save vertical room */
+    font-size: 1.8rem; 
   }
 }
 
@@ -416,27 +445,25 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 .logo-track {
   display: flex;
   align-items: center;
-  gap: 2.5rem; 
+  gap: 3.5rem; /* Slightly increased gap to accommodate larger logos */
   white-space: nowrap;
   padding-left: 2rem;
   width: max-content; 
   user-select: none; 
 }
 
+/* UPDATED: Logos are now considerably larger on desktop */
 .logo-item {
   flex: 0 0 auto;
-  width: 140px;
-  height: 80px;
+  width: 200px; /* Increased from 140px */
+  height: 110px; /* Increased from 80px */
   display: flex;
   align-items: center;
   justify-content: center;
   pointer-events: auto; 
 }
 
-/* Logo Lighting Effect
-   Layer 1: Dark drop-shadow anchors the logo for clear visibility
-   Layer 2: Lighter blue drop-shadow provides the ambient glow
-*/
+/* Logo Lighting Effect */
 .logo-item img {
   max-width: 100%;
   max-height: 100%;
@@ -569,19 +596,19 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
 .fb-icon:hover { opacity: 1; filter: drop-shadow(0 0 5px var(--accent)); }
 
 /* RESPONSIVE */
-/* UPDATED: Shrinking the Carousel and outer padding for Desktop Fit */
+/* Shrinking the Carousel and outer padding for Desktop Fit */
 @media (min-width: 851px) {
   .work-section {
-    padding: 2rem; /* Reduced outer padding */
+    padding: 2rem; 
   }
   .carousel-shell {
-    padding: 1.5rem 2rem; /* Tightened inner shell padding */
+    padding: 1.5rem 2rem; 
   }
   .carousel-visual img {
-    height: 250px; /* Reduced image height so the carousel fits entirely on a standard laptop screen */
+    height: 250px; 
   }
   .carousel-item {
-    gap: 1.5rem; /* Shrunk spacing between image and text */
+    gap: 1.5rem; 
   }
 }
 
@@ -606,6 +633,12 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
     padding: 1rem 0;
     margin: 0; 
     width: 100%;
+  }
+
+  /* UPDATED: Logos are slightly bigger on mobile too */
+  .logo-item {
+    width: 160px; /* Increased from 140px */
+    height: 90px; /* Increased from 80px */
   }
 
   .timeline-nav-row {
