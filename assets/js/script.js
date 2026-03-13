@@ -307,3 +307,84 @@
 
 var yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+// ----------------------------------------------------
+// WORK / ART MODE TOGGLE LOGIC
+// ----------------------------------------------------
+(function () {
+  const modeToggle = document.getElementById("mode-toggle");
+  const pullStringContainer = document.getElementById("pull-string");
+  const layerWork = document.getElementById("layer-work");
+  const layerArt = document.getElementById("layer-art");
+  const clickSound = document.getElementById("switch-sound");
+  
+  const workLabel = document.querySelector(".work-label");
+  const artLabel = document.querySelector(".art-label");
+
+  let isWorkMode = true;
+  let isTransitioning = false;
+
+  function executePowerSwitch() {
+    if (isTransitioning) return;
+    isTransitioning = true;
+
+    // 1. Play Click Sound
+    if (clickSound) {
+      clickSound.currentTime = 0;
+      clickSound.play().catch(e => console.log("Audio play blocked by browser:", e));
+    }
+
+    // 2. Add visual flicker to the triggers
+    if (modeToggle) modeToggle.parentElement.classList.add("flicker-effect");
+    if (pullStringContainer) {
+      pullStringContainer.classList.add("pulled");
+      setTimeout(() => pullStringContainer.classList.remove("pulled"), 300);
+    }
+
+    // 3. Wait for the flicker, then swap layers
+    setTimeout(() => {
+      if (modeToggle) modeToggle.parentElement.classList.remove("flicker-effect");
+      
+      if (isWorkMode) {
+        // Switch to ART Mode
+        layerWork.classList.replace("active", "hidden");
+        layerArt.classList.replace("hidden", "active");
+        
+        if (modeToggle) modeToggle.checked = false; // Uncheck the input
+        if (workLabel) workLabel.classList.remove("active-glow");
+        if (artLabel) artLabel.classList.add("active-glow");
+        if (pullStringContainer) pullStringContainer.classList.add("art-mode");
+        
+      } else {
+        // Switch to WORK Mode
+        layerArt.classList.replace("active", "hidden");
+        layerWork.classList.replace("hidden", "active");
+        
+        if (modeToggle) modeToggle.checked = true; // Check the input
+        if (artLabel) artLabel.classList.remove("active-glow");
+        if (workLabel) workLabel.classList.add("active-glow");
+        if (pullStringContainer) pullStringContainer.classList.remove("art-mode");
+      }
+      
+      isWorkMode = !isWorkMode;
+      
+      // Gently scroll back to the top during the fade
+      document.querySelector(".page-wrapper").scrollTo({ top: 0, behavior: "smooth" });
+      
+      isTransitioning = false;
+    }, 350); // This 350ms delay syncs perfectly with the CSS neon flicker!
+  }
+
+  // Desktop Click Listener
+  if (modeToggle) {
+    modeToggle.addEventListener("click", function (e) {
+      e.preventDefault(); // Stop default HTML checkbox behavior
+      executePowerSwitch();
+    });
+  }
+
+  // Mobile Pull String Listener
+  if (pullStringContainer) {
+    pullStringContainer.addEventListener("click", executePowerSwitch);
+  }
+})();
