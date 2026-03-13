@@ -1,6 +1,6 @@
 // Smooth scroll for any [data-scroll-to] element
 (function () {
-  var scroller = document.querySelector(".page-wrapper") || window;
+  var scroller = document.querySelector(".contentStage") || window;
 
   document.querySelectorAll("[data-scroll-to]").forEach(function (btn) {
     btn.addEventListener("click", function () {
@@ -104,9 +104,8 @@
   updateUI();
 })();
 
-
 // ----------------------------------------------------
-// UPDATED: Draggable Logo Scroller (Fixed Mobile Auto-Scroll)
+// Draggable Logo Scroller
 // ----------------------------------------------------
 (function() {
   var slider = document.querySelector('.logo-scroller');
@@ -114,7 +113,6 @@
   
   if(!slider || !track) return;
 
-  // Clone nodes for seamless loop
   var items = Array.from(track.children);
   items.forEach(function(item) {
     var clone = item.cloneNode(true);
@@ -138,77 +136,40 @@
     requestAnimationFrame(autoScroll);
   }
 
-  // Start loop
   requestAnimationFrame(autoScroll);
 
-  function startAuto() { 
-    clearTimeout(resumeTimeout);
-    autoScrollActive = true; 
-  }
-  
-  function stopAuto() { 
-    autoScrollActive = false; 
-  }
+  function startAuto() { clearTimeout(resumeTimeout); autoScrollActive = true; }
+  function stopAuto() { autoScrollActive = false; }
 
-  // Mouse Events
   slider.addEventListener('mousedown', function(e) {
-    isDown = true;
-    stopAuto();
-    slider.classList.add('active');
-    startX = e.pageX - slider.offsetLeft;
-    scrollLeft = slider.scrollLeft;
+    isDown = true; stopAuto(); slider.classList.add('active');
+    startX = e.pageX - slider.offsetLeft; scrollLeft = slider.scrollLeft;
   });
 
-  slider.addEventListener('mouseleave', function() {
-    isDown = false;
-    slider.classList.remove('active');
-    startAuto();
-  });
-
-  slider.addEventListener('mouseup', function() {
-    isDown = false;
-    slider.classList.remove('active');
-    startAuto();
-  });
-
+  slider.addEventListener('mouseleave', function() { isDown = false; slider.classList.remove('active'); startAuto(); });
+  slider.addEventListener('mouseup', function() { isDown = false; slider.classList.remove('active'); startAuto(); });
   slider.addEventListener('mousemove', function(e) {
-    if(!isDown) return;
-    e.preventDefault();
-    var x = e.pageX - slider.offsetLeft;
-    var walk = (x - startX) * 2; 
+    if(!isDown) return; e.preventDefault();
+    var x = e.pageX - slider.offsetLeft; var walk = (x - startX) * 2; 
     slider.scrollLeft = scrollLeft - walk;
   });
 
-  // Touch Events (Enhanced for mobile persistence)
   slider.addEventListener('touchstart', function(e) {
-    isDown = true;
-    stopAuto();
-    startX = e.touches[0].pageX - slider.offsetLeft;
-    scrollLeft = slider.scrollLeft;
+    isDown = true; stopAuto();
+    startX = e.touches[0].pageX - slider.offsetLeft; scrollLeft = slider.scrollLeft;
   }, { passive: true });
 
-  slider.addEventListener('touchend', function() {
-    isDown = false;
-    // Delay resumption slightly to feel more natural
-    resumeTimeout = setTimeout(startAuto, 500);
-  });
-
-  slider.addEventListener('touchcancel', function() {
-    isDown = false;
-    startAuto();
-  });
-
+  slider.addEventListener('touchend', function() { isDown = false; resumeTimeout = setTimeout(startAuto, 500); });
+  slider.addEventListener('touchcancel', function() { isDown = false; startAuto(); });
   slider.addEventListener('touchmove', function(e) {
     if(!isDown) return;
-    var x = e.touches[0].pageX - slider.offsetLeft;
-    var walk = (x - startX) * 2;
+    var x = e.touches[0].pageX - slider.offsetLeft; var walk = (x - startX) * 2;
     slider.scrollLeft = scrollLeft - walk;
   }, { passive: true });
 })();
 
-
 // ----------------------------------------------------
-// CAROUSEL LOGIC (Project Library)
+// CAROUSEL LOGIC
 // ----------------------------------------------------
 (function () {
   var track = document.querySelector(".carousel-track");
@@ -232,42 +193,30 @@
 
   var dots = Array.from(dotsContainer.querySelectorAll(".carousel-dot"));
 
-  function getCurrentIndex() {
-    return Math.round(track.scrollLeft / track.offsetWidth);
-  }
-
+  function getCurrentIndex() { return Math.round(track.scrollLeft / track.offsetWidth); }
   function updateDots() {
     var idx = getCurrentIndex();
-    dots.forEach(function (dot, i) {
-      dot.classList.toggle("is-active", i === idx);
-    });
+    dots.forEach(function (dot, i) { dot.classList.toggle("is-active", i === idx); });
   }
 
-  function scrollToIndex(index) {
-    track.scrollTo({ left: track.offsetWidth * index, behavior: 'smooth' });
-  }
+  function scrollToIndex(index) { track.scrollTo({ left: track.offsetWidth * index, behavior: 'smooth' }); }
 
   if (nextBtn) {
     nextBtn.addEventListener("click", function () {
       var next = (getCurrentIndex() + 1) % slides.length; 
-      scrollToIndex(next);
-      resetAuto();
+      scrollToIndex(next); resetAuto();
     });
   }
 
   if (prevBtn) {
     prevBtn.addEventListener("click", function () {
       var prev = (getCurrentIndex() - 1 + slides.length) % slides.length; 
-      scrollToIndex(prev);
-      resetAuto();
+      scrollToIndex(prev); resetAuto();
     });
   }
 
   dots.forEach(function (dot) {
-    dot.addEventListener("click", function () {
-      scrollToIndex(parseInt(dot.dataset.index, 10));
-      resetAuto();
-    });
+    dot.addEventListener("click", function () { scrollToIndex(parseInt(dot.dataset.index, 10)); resetAuto(); });
   });
 
   track.addEventListener("scroll", function() {
@@ -278,21 +227,16 @@
   function startAuto() {
     if (autoInterval) return;
     autoInterval = setInterval(function() {
-      var next = (getCurrentIndex() + 1) % slides.length;
-      scrollToIndex(next);
+      var next = (getCurrentIndex() + 1) % slides.length; scrollToIndex(next);
     }, AUTO_DELAY);
   }
 
   function stopAuto() {
     if (!autoInterval) return;
-    clearInterval(autoInterval);
-    autoInterval = null;
+    clearInterval(autoInterval); autoInterval = null;
   }
 
-  function resetAuto() {
-    stopAuto();
-    startAuto();
-  }
+  function resetAuto() { stopAuto(); startAuto(); }
 
   var carouselShell = document.querySelector(".carousel-shell");
   if (carouselShell) {
@@ -309,82 +253,74 @@ var yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 // ----------------------------------------------------
-// WORK / ART MODE TOGGLE LOGIC
+// NEW: NEON TOGGLE & CROSSFADE LOGIC
 // ----------------------------------------------------
-(function () {
-  const modeToggle = document.getElementById("mode-toggle");
-  const pullStringContainer = document.getElementById("pull-string");
-  const layerWork = document.getElementById("layer-work");
-  const layerArt = document.getElementById("layer-art");
-  const clickSound = document.getElementById("switch-sound");
+(function() {
+  const toggle = document.getElementById("powerSwitch");
+  const openRow = document.getElementById("openRow");
+  const afterRow = document.getElementById("afterRow");
+  const workPane = document.getElementById("workPane");
+  const playPane = document.getElementById("playPane");
+  const overlay = document.getElementById("powerOverlay");
+  const mobilePulley = document.getElementById("mobile-pulley");
   
-  const workLabel = document.querySelector(".work-label");
-  const artLabel = document.querySelector(".art-label");
+  if(!toggle) return;
 
-  let isWorkMode = true;
-  let isTransitioning = false;
+  let animating = false;
 
-  function executePowerSwitch() {
-    if (isTransitioning) return;
-    isTransitioning = true;
-
-    // 1. Play Click Sound
-    if (clickSound) {
-      clickSound.currentTime = 0;
-      clickSound.play().catch(e => console.log("Audio play blocked by browser:", e));
+  function setSignVisuals(isWork) {
+    if (isWork) {
+      openRow.className = "row openRow neonBlue";
+      afterRow.className = "row afterRow ghost";
+    } else {
+      openRow.className = "row openRow ghost";
+      afterRow.className = "row afterRow neonPurple";
     }
-
-    // 2. Add visual flicker to the triggers
-    if (modeToggle) modeToggle.parentElement.classList.add("flicker-effect");
-    if (pullStringContainer) {
-      pullStringContainer.classList.add("pulled");
-      setTimeout(() => pullStringContainer.classList.remove("pulled"), 300);
-    }
-
-    // 3. Wait for the flicker, then swap layers
-    setTimeout(() => {
-      if (modeToggle) modeToggle.parentElement.classList.remove("flicker-effect");
-      
-      if (isWorkMode) {
-        // Switch to ART Mode
-        layerWork.classList.replace("active", "hidden");
-        layerArt.classList.replace("hidden", "active");
-        
-        if (modeToggle) modeToggle.checked = false; // Uncheck the input
-        if (workLabel) workLabel.classList.remove("active-glow");
-        if (artLabel) artLabel.classList.add("active-glow");
-        if (pullStringContainer) pullStringContainer.classList.add("art-mode");
-        
-      } else {
-        // Switch to WORK Mode
-        layerArt.classList.replace("active", "hidden");
-        layerWork.classList.replace("hidden", "active");
-        
-        if (modeToggle) modeToggle.checked = true; // Check the input
-        if (artLabel) artLabel.classList.remove("active-glow");
-        if (workLabel) workLabel.classList.add("active-glow");
-        if (pullStringContainer) pullStringContainer.classList.remove("art-mode");
-      }
-      
-      isWorkMode = !isWorkMode;
-      
-      // Gently scroll back to the top during the fade
-      document.querySelector(".page-wrapper").scrollTo({ top: 0, behavior: "smooth" });
-      
-      isTransitioning = false;
-    }, 350); // This 350ms delay syncs perfectly with the CSS neon flicker!
   }
 
-  // Desktop Click Listener
-  if (modeToggle) {
-    modeToggle.addEventListener("click", function (e) {
-      e.preventDefault(); // Stop default HTML checkbox behavior
-      executePowerSwitch();
+  function powerTransition(isWork) {
+    if (animating) return;
+    animating = true;
+    
+    // Trigger the flash
+    overlay.classList.remove("flash");
+    void overlay.offsetWidth; 
+    overlay.classList.add("flash");
+
+    // Swap panes during the flash
+    setTimeout(() => {
+      if (isWork) {
+        playPane.classList.remove("isActive");
+        workPane.classList.add("isActive");
+      } else {
+        workPane.classList.remove("isActive");
+        playPane.classList.add("isActive");
+      }
+      document.querySelector(".contentStage").scrollTo({ top: 0, behavior: "instant" });
+    }, 250);
+
+    setTimeout(() => { animating = false; }, 500);
+  }
+
+  // Desktop Listener
+  toggle.addEventListener("change", () => {
+    const isWork = toggle.checked;
+    setSignVisuals(isWork);
+    powerTransition(isWork);
+  });
+
+  // Mobile Pulley Listener
+  if (mobilePulley) {
+    mobilePulley.addEventListener("click", () => {
+      if (animating) return;
+      toggle.checked = !toggle.checked;
+      const isWork = toggle.checked;
+      setSignVisuals(isWork);
+      powerTransition(isWork);
     });
   }
 
-  // Mobile Pull String Listener
-  if (pullStringContainer) {
-    pullStringContainer.addEventListener("click", executePowerSwitch);
-  }
+  // Init
+  const isWork = toggle.checked;
+  setSignVisuals(isWork);
 })();
