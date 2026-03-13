@@ -1,6 +1,6 @@
 // Smooth scroll for any [data-scroll-to] element
 (function () {
-  var scroller = document.querySelector(".contentStage") || window;
+  var scroller = document.querySelector(".page-wrapper") || window;
 
   document.querySelectorAll("[data-scroll-to]").forEach(function (btn) {
     btn.addEventListener("click", function () {
@@ -104,8 +104,9 @@
   updateUI();
 })();
 
+
 // ----------------------------------------------------
-// Draggable Logo Scroller
+// UPDATED: Draggable Logo Scroller (Fixed Mobile Auto-Scroll)
 // ----------------------------------------------------
 (function() {
   var slider = document.querySelector('.logo-scroller');
@@ -113,6 +114,7 @@
   
   if(!slider || !track) return;
 
+  // Clone nodes for seamless loop
   var items = Array.from(track.children);
   items.forEach(function(item) {
     var clone = item.cloneNode(true);
@@ -136,40 +138,77 @@
     requestAnimationFrame(autoScroll);
   }
 
+  // Start loop
   requestAnimationFrame(autoScroll);
 
-  function startAuto() { clearTimeout(resumeTimeout); autoScrollActive = true; }
-  function stopAuto() { autoScrollActive = false; }
+  function startAuto() { 
+    clearTimeout(resumeTimeout);
+    autoScrollActive = true; 
+  }
+  
+  function stopAuto() { 
+    autoScrollActive = false; 
+  }
 
+  // Mouse Events
   slider.addEventListener('mousedown', function(e) {
-    isDown = true; stopAuto(); slider.classList.add('active');
-    startX = e.pageX - slider.offsetLeft; scrollLeft = slider.scrollLeft;
+    isDown = true;
+    stopAuto();
+    slider.classList.add('active');
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
   });
 
-  slider.addEventListener('mouseleave', function() { isDown = false; slider.classList.remove('active'); startAuto(); });
-  slider.addEventListener('mouseup', function() { isDown = false; slider.classList.remove('active'); startAuto(); });
+  slider.addEventListener('mouseleave', function() {
+    isDown = false;
+    slider.classList.remove('active');
+    startAuto();
+  });
+
+  slider.addEventListener('mouseup', function() {
+    isDown = false;
+    slider.classList.remove('active');
+    startAuto();
+  });
+
   slider.addEventListener('mousemove', function(e) {
-    if(!isDown) return; e.preventDefault();
-    var x = e.pageX - slider.offsetLeft; var walk = (x - startX) * 2; 
+    if(!isDown) return;
+    e.preventDefault();
+    var x = e.pageX - slider.offsetLeft;
+    var walk = (x - startX) * 2; 
     slider.scrollLeft = scrollLeft - walk;
   });
 
+  // Touch Events (Enhanced for mobile persistence)
   slider.addEventListener('touchstart', function(e) {
-    isDown = true; stopAuto();
-    startX = e.touches[0].pageX - slider.offsetLeft; scrollLeft = slider.scrollLeft;
+    isDown = true;
+    stopAuto();
+    startX = e.touches[0].pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
   }, { passive: true });
 
-  slider.addEventListener('touchend', function() { isDown = false; resumeTimeout = setTimeout(startAuto, 500); });
-  slider.addEventListener('touchcancel', function() { isDown = false; startAuto(); });
+  slider.addEventListener('touchend', function() {
+    isDown = false;
+    // Delay resumption slightly to feel more natural
+    resumeTimeout = setTimeout(startAuto, 500);
+  });
+
+  slider.addEventListener('touchcancel', function() {
+    isDown = false;
+    startAuto();
+  });
+
   slider.addEventListener('touchmove', function(e) {
     if(!isDown) return;
-    var x = e.touches[0].pageX - slider.offsetLeft; var walk = (x - startX) * 2;
+    var x = e.touches[0].pageX - slider.offsetLeft;
+    var walk = (x - startX) * 2;
     slider.scrollLeft = scrollLeft - walk;
   }, { passive: true });
 })();
 
+
 // ----------------------------------------------------
-// CAROUSEL LOGIC
+// CAROUSEL LOGIC (Project Library)
 // ----------------------------------------------------
 (function () {
   var track = document.querySelector(".carousel-track");
@@ -193,30 +232,42 @@
 
   var dots = Array.from(dotsContainer.querySelectorAll(".carousel-dot"));
 
-  function getCurrentIndex() { return Math.round(track.scrollLeft / track.offsetWidth); }
-  function updateDots() {
-    var idx = getCurrentIndex();
-    dots.forEach(function (dot, i) { dot.classList.toggle("is-active", i === idx); });
+  function getCurrentIndex() {
+    return Math.round(track.scrollLeft / track.offsetWidth);
   }
 
-  function scrollToIndex(index) { track.scrollTo({ left: track.offsetWidth * index, behavior: 'smooth' }); }
+  function updateDots() {
+    var idx = getCurrentIndex();
+    dots.forEach(function (dot, i) {
+      dot.classList.toggle("is-active", i === idx);
+    });
+  }
+
+  function scrollToIndex(index) {
+    track.scrollTo({ left: track.offsetWidth * index, behavior: 'smooth' });
+  }
 
   if (nextBtn) {
     nextBtn.addEventListener("click", function () {
       var next = (getCurrentIndex() + 1) % slides.length; 
-      scrollToIndex(next); resetAuto();
+      scrollToIndex(next);
+      resetAuto();
     });
   }
 
   if (prevBtn) {
     prevBtn.addEventListener("click", function () {
       var prev = (getCurrentIndex() - 1 + slides.length) % slides.length; 
-      scrollToIndex(prev); resetAuto();
+      scrollToIndex(prev);
+      resetAuto();
     });
   }
 
   dots.forEach(function (dot) {
-    dot.addEventListener("click", function () { scrollToIndex(parseInt(dot.dataset.index, 10)); resetAuto(); });
+    dot.addEventListener("click", function () {
+      scrollToIndex(parseInt(dot.dataset.index, 10));
+      resetAuto();
+    });
   });
 
   track.addEventListener("scroll", function() {
@@ -227,16 +278,21 @@
   function startAuto() {
     if (autoInterval) return;
     autoInterval = setInterval(function() {
-      var next = (getCurrentIndex() + 1) % slides.length; scrollToIndex(next);
+      var next = (getCurrentIndex() + 1) % slides.length;
+      scrollToIndex(next);
     }, AUTO_DELAY);
   }
 
   function stopAuto() {
     if (!autoInterval) return;
-    clearInterval(autoInterval); autoInterval = null;
+    clearInterval(autoInterval);
+    autoInterval = null;
   }
 
-  function resetAuto() { stopAuto(); startAuto(); }
+  function resetAuto() {
+    stopAuto();
+    startAuto();
+  }
 
   var carouselShell = document.querySelector(".carousel-shell");
   if (carouselShell) {
@@ -251,76 +307,3 @@
 
 var yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-// ----------------------------------------------------
-// NEW: NEON TOGGLE & CROSSFADE LOGIC
-// ----------------------------------------------------
-(function() {
-  const toggle = document.getElementById("powerSwitch");
-  const openRow = document.getElementById("openRow");
-  const afterRow = document.getElementById("afterRow");
-  const workPane = document.getElementById("workPane");
-  const playPane = document.getElementById("playPane");
-  const overlay = document.getElementById("powerOverlay");
-  const mobilePulley = document.getElementById("mobile-pulley");
-  
-  if(!toggle) return;
-
-  let animating = false;
-
-  function setSignVisuals(isWork) {
-    if (isWork) {
-      openRow.className = "row openRow neonBlue";
-      afterRow.className = "row afterRow ghost";
-    } else {
-      openRow.className = "row openRow ghost";
-      afterRow.className = "row afterRow neonPurple";
-    }
-  }
-
-  function powerTransition(isWork) {
-    if (animating) return;
-    animating = true;
-    
-    // Trigger the flash
-    overlay.classList.remove("flash");
-    void overlay.offsetWidth; 
-    overlay.classList.add("flash");
-
-    // Swap panes during the flash
-    setTimeout(() => {
-      if (isWork) {
-        playPane.classList.remove("isActive");
-        workPane.classList.add("isActive");
-      } else {
-        workPane.classList.remove("isActive");
-        playPane.classList.add("isActive");
-      }
-      document.querySelector(".contentStage").scrollTo({ top: 0, behavior: "instant" });
-    }, 250);
-
-    setTimeout(() => { animating = false; }, 500);
-  }
-
-  // Desktop Listener
-  toggle.addEventListener("change", () => {
-    const isWork = toggle.checked;
-    setSignVisuals(isWork);
-    powerTransition(isWork);
-  });
-
-  // Mobile Pulley Listener
-  if (mobilePulley) {
-    mobilePulley.addEventListener("click", () => {
-      if (animating) return;
-      toggle.checked = !toggle.checked;
-      const isWork = toggle.checked;
-      setSignVisuals(isWork);
-      powerTransition(isWork);
-    });
-  }
-
-  // Init
-  const isWork = toggle.checked;
-  setSignVisuals(isWork);
-})();
