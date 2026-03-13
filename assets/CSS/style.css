@@ -660,3 +660,192 @@ h2 { font-size: 2.2rem; margin-bottom: 1rem; }
     margin-top: 10px;
   }
 }
+
+/* ==================================================== */
+/* ON/OFF TOGGLE SYSTEM, HEADER & LAYERS                */
+/* ==================================================== */
+
+/* Sticky Header */
+.main-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(5, 5, 16, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* Neon Toggle Switch */
+.toggle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mode-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  transition: all 0.3s ease;
+}
+
+.mode-label.active-glow {
+  color: #fff;
+  text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent);
+}
+
+.neon-switch {
+  position: relative;
+  display: inline-block;
+  width: 54px;
+  height: 30px;
+}
+
+.neon-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: var(--bg-soft);
+  border: 2px solid var(--border-subtle);
+  border-radius: 34px;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: var(--text-muted);
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(78, 123, 254, 0.6);
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+  background-color: var(--accent);
+  box-shadow: 0 0 15px var(--accent);
+}
+
+/* Flicker Animation */
+.flicker-effect {
+  animation: neon-flicker 0.4s forwards;
+}
+
+@keyframes neon-flicker {
+  0% { opacity: 1; filter: brightness(1); }
+  20% { opacity: 0.2; filter: brightness(0.5); }
+  40% { opacity: 1; filter: brightness(1.2); }
+  60% { opacity: 0.1; filter: brightness(0.2); }
+  80% { opacity: 0.8; filter: brightness(1); }
+  100% { opacity: 1; filter: brightness(1); }
+}
+
+/* Content Stack & Layers (The Crossfade Magic) */
+.content-stack {
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+}
+
+.mode-layer {
+  grid-area: 1 / 1; /* Places both layers in the exact same spot */
+  transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+  width: 100%;
+}
+
+.mode-layer.hidden {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transform: scale(0.98) translateY(10px);
+  filter: blur(4px);
+}
+
+.mode-layer.active {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+  transform: scale(1) translateY(0);
+  filter: blur(0);
+}
+
+/* Mobile Pull String */
+.mobile-only { display: none; }
+
+@media (max-width: 850px) {
+  .desktop-only { display: none !important; }
+  .mobile-only { display: flex; }
+  
+  .pull-string-container {
+    position: fixed;
+    top: 0;
+    right: 25px;
+    z-index: 1000;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .string-mount {
+    width: 20px;
+    height: 10px;
+    background: var(--bg-soft);
+    border: 1px solid var(--border-subtle);
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+  }
+  
+  .string {
+    width: 3px;
+    height: 70px;
+    background: repeating-linear-gradient(
+      0deg,
+      var(--text-muted) 0px,
+      var(--text-muted) 4px,
+      transparent 4px,
+      transparent 8px
+    );
+    transition: height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  
+  .handle {
+    width: 20px;
+    height: 35px;
+    background: var(--accent);
+    border-radius: 20px;
+    box-shadow: 0 0 15px var(--accent);
+    transform: translateY(-2px);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  /* Pull Animation State */
+  .pull-string-container.pulled .string { height: 90px; }
+  .pull-string-container.pulled .handle { transform: translateY(5px); }
+  
+  /* Art mode color for handle */
+  .pull-string-container.art-mode .handle {
+    background: var(--accent-purple);
+    box-shadow: 0 0 15px var(--accent-purple);
+  }
+}
