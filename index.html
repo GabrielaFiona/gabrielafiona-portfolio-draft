@@ -9,85 +9,372 @@
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/GabrielaFiona/Draft-gabrielafionacadena/c7ff6c3a3db4be6c7db6e33f9279c137e6772946/assets/img/glogofaviconblue.png">
 </head>
 <body>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RGV5TH6H9Y"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-RGV5TH6H9Y');
+  </script>
 
-<header class="main-header desktop-only">
-  <div class="toggle-wrapper">
-    <span class="mode-label art-label">ART</span>
-    <label class="neon-switch">
-      <input type="checkbox" id="mode-toggle" checked>
-      <span class="slider round"></span>
-    </label>
-    <span class="mode-label work-label active-glow">WORK</span>
-  </div>
-</header>
+<div class="page-master-wrapper">
 
-<div class="pull-string-container mobile-only" id="pull-string">
-  <div class="string-mount"></div>
-  <div class="string"></div>
-  <div class="handle"></div>
-</div>
+  <header class="main-header">
+    <div class="header-brand">
+      <img src="https://raw.githubusercontent.com/GabrielaFiona/gabrielafiona-portfolio-draft/18ee7c88c42c70f9b94f2337717cdd2bef7acb14/assets/img/namelogoblackwhitethicker.png" alt="Gabriela Fiona Cadena logo" class="header-logo" />
+      <span class="header-title desktop-only">Digital Architect</span>
+    </div>
 
-<audio id="switch-sound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" preload="auto"></audio>
+    <div class="scene toggle-wrapper" id="scene">
+      <div class="cable desktop-only"></div>
 
-<div class="page-wrapper">
-  
-  <div class="content-stack">
-
-    <div id="layer-work" class="mode-layer active">
-      <section class="intro-hero">
-        <div class="intro-header-bg">
-          <div class="hero-tagline">Gabriela Fiona Cadena</div>
-          <h1>Digital Architect</h1>
+      <div class="signFrame" id="signFrame">
+        <div class="signInner">
+          <div class="row openRow neonBlue" id="openRow">OPEN</div>
+          <div class="row afterRow ghost" id="afterRow">AFTER HOURS</div>
         </div>
-        
-        <div class="intro-inner section">
-          <div class="intro-photo">
-            <img src="https://raw.githubusercontent.com/GabrielaFiona/gabrielafiona-portfolio-draft/433350c49ac453d0610d72f39ba89a41e338679d/assets/img/redsweaterhalfsmilehs.jpeg" alt="Gabriela Fiona Cadena" />
+      </div>
+
+      <label class="iosToggle desktop-only">
+        <input type="checkbox" id="powerSwitch" checked />
+        <span class="track">
+          <span class="knob">
+            <span class="knobText">ON</span>
+          </span>
+        </span>
+      </label>
+
+      <div class="pull-cord-wrapper mobile-only" id="mobile-pulley">
+        <div class="pull-cord swaying"></div>
+        <div class="cord-handle"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="contentStage" id="contentStage">
+
+    <section class="contentPane isActive" id="workPane">
+      <div class="page-wrapper" style="height: auto; overflow: visible;">
+        <section class="intro-hero">
+          <div class="intro-header-bg">
+            <div class="hero-tagline">Gabriela Fiona Cadena</div>
+            <h1>Digital Architect</h1>
           </div>
-          <div class="intro-text">
-            <span class="eyebrow">Nice to meet you!</span>
-            <h2>Hi, I’m Gabriela.</h2>
-            <p>I specialize in building clean, modern websites and brand kits for businesses along the Oregon Coast. With 5+ years in digital marketing and a Google UX/UI certificate, I focus on designs that feel intuitive and fit your brand.</p>
-            <div class="about-highlight">
-              <p>I help businesses move from “we don’t really have a website” to “we look like a real, established brand.”</p>
+          
+          <div class="intro-inner section">
+            <div class="intro-photo">
+              <img src="https://raw.githubusercontent.com/GabrielaFiona/gabrielafiona-portfolio-draft/433350c49ac453d0610d72f39ba89a41e338679d/assets/img/redsweaterhalfsmilehs.jpeg" alt="Gabriela Fiona Cadena" />
+            </div>
+            <div class="intro-text">
+              <span class="eyebrow">Nice to meet you!</span>
+              <h2>Hi, I’m Gabriela.</h2>
+              <p>I specialize in building clean, modern websites and brand kits for businesses along the Oregon Coast. With 5+ years in digital marketing and a Google UX/UI certificate, I focus on designs that feel intutive and fit your brand.</p>
+              <div class="about-highlight">
+                <p>I help businesses move from “we don’t really have a website” to “we look like a real, established brand.”</p>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <footer class="mini-footer">
-        <div class="footer-social-row">
-          <a href="https://facebook.com/yourpage" target="_blank" rel="noopener" class="footer-social-link" aria-label="Visit my Facebook page">
-            <img src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/facebook.svg" class="fb-icon" alt="" />
-          </a>
+        <div class="desktop-row section">
+          <section id="experience" class="resume-section">
+            <div class="section-header">
+              <span class="eyebrow">The Architect's Blueprint</span>
+              <h2>Professional Experience</h2>
+            </div>
+
+            <div class="timeline-wrapper">
+              <div class="timeline-main-row">
+                <div class="timeline-display">
+                  
+                  <div class="timeline-slide active" data-year="2026">
+                    <span class="timeline-year-label">2026</span>
+                    <h3>Web Architect & Marketer</h3>
+                    <p>Designing mobile-first websites and conversion funnels for Oregon Coast businesses. Specialized in UX strategy and brand identity.</p>
+                    <ul class="timeline-bullets">
+                      <li>Role: Web Architect</li>
+                      <li>Company: Independent</li>
+                    </ul>
+                  </div>
+                  
+                  <div class="timeline-slide" data-year="2025">
+                    <span class="timeline-year-label">2025</span>
+                    <h3>Freelance Growth</h3>
+                    <p>Expanded client base and refined tiered service packages for small business web maintenance.</p>
+                    <ul class="timeline-bullets">
+                      <li>Role: Web Designer</li>
+                      <li>Company: Independent</li>
+                    </ul>
+                  </div>
+                  
+                  <div class="timeline-slide" data-year="2024">
+                    <span class="timeline-year-label">2024</span>
+                    <h3>Full Stack Development</h3>
+                    <p>Deepened knowledge in CSS3 animations and JavaScript frameworks to create more immersive web experiences.</p>
+                    <ul class="timeline-bullets">
+                      <li>Role: Developer</li>
+                      <li>Company: Independent</li>
+                    </ul>
+                  </div>
+                  
+                  <div class="timeline-slide" data-year="2023">
+                    <span class="timeline-year-label">2023</span>
+                    <h3>Google UX/UI Certification</h3>
+                    <p>Professional training in user-centric design, wireframing, and accessibility standards to ensure websites work for everyone.</p>
+                    <ul class="timeline-bullets">
+                      <li>Role: UX/UI Student</li>
+                      <li>Company: Google</li>
+                    </ul>
+                  </div>
+                  
+                  <div class="timeline-slide" data-year="2022">
+                    <span class="timeline-year-label">2022</span>
+                    <h3>Digital Marketing Lead</h3>
+                    <p>Managed social media campaigns and email marketing strategies for local retail clients.</p>
+                    <ul class="timeline-bullets">
+                      <li>Role: Marketing Lead</li>
+                      <li>Company: [Company Name]</li>
+                    </ul>
+                  </div>
+                  
+                  <div class="timeline-slide" data-year="2021">
+                    <span class="timeline-year-label">2021</span>
+                    <h3>Freelance Designer</h3>
+                    <p>Started offering dedicated web design services focusing on Squarespace and custom HTML/CSS solutions.</p>
+                    <ul class="timeline-bullets">
+                      <li>Role: Web Designer</li>
+                      <li>Company: Independent</li>
+                    </ul>
+                  </div>
+                  
+                  <div class="timeline-slide" data-year="2020">
+                    <span class="timeline-year-label">2020</span>
+                    <h3>Content Strategy</h3>
+                    <p>Focused on copywriting, managing advertising budgets, and organizing brand events for GMC, Chevrolet, and Ford.</p>
+                    <ul class="timeline-bullets">
+                      <li>Role: Marketing Manager</li>
+                      <li>Company: Vehicle Dealership</li>
+                    </ul>
+                  </div>
+                  
+                  <div class="timeline-slide" data-year="2019">
+                    <span class="timeline-year-label">2019</span>
+                    <h3>Social Media Management</h3>
+                    <p>Helping businesses grow their audience through organic engagement, staff training, and targeted ad campaigns.</p>
+                    <ul class="timeline-bullets">
+                      <li>Role: Social Media Manager</li>
+                      <li>Company: Vehicle Dealership</li>
+                    </ul>
+                  </div>
+                  
+                  <div class="timeline-slide" data-year="2018">
+                    <span class="timeline-year-label">2018</span>
+                    <h3>Graphic Design</h3>
+                    <p>Creating brand assets, logos, and print materials for local events and startups.</p>
+                    <ul class="timeline-bullets">
+                      <li>Role: Graphic Designer</li>
+                      <li>Company: [Company Name]</li>
+                    </ul>
+                  </div>
+                  
+                  <div class="timeline-slide" data-year="2017">
+                    <span class="timeline-year-label">2017</span>
+                    <h3>Marketing Assistant</h3>
+                    <p>Assisted in executing marketing plans and analyzing customer data to improve outreach.</p>
+                    <ul class="timeline-bullets">
+                      <li>Role: Marketing Assistant</li>
+                      <li>Company: [Company Name]</li>
+                    </ul>
+                  </div>
+                  
+                  <div class="timeline-slide" data-year="2016">
+                    <span class="timeline-year-label">2016</span>
+                    <h3>Early Career Growth</h3>
+                    <p>Built foundational skills in customer engagement and digital brand representation.</p>
+                    <ul class="timeline-bullets">
+                      <li>Role: Marketing Associate</li>
+                      <li>Company: [Company Name]</li>
+                    </ul>
+                  </div>
+                  
+                  <div class="timeline-slide" data-year="2015">
+                    <span class="timeline-year-label">2015</span>
+                    <h3>Marketing & Sales Foundation</h3>
+                    <p>Developed direct marketing techniques and localized advertising strategies.</p>
+                    <ul class="timeline-bullets">
+                      <li>Role: Sales & Marketing</li>
+                      <li>Company: [Company Name]</li>
+                    </ul>
+                  </div>
+                  
+                  <div class="timeline-slide" data-year="2014">
+                    <span class="timeline-year-label">2014</span>
+                    <h3>Career Beginning</h3>
+                    <p>Entered the digital space with a focus on marketing strategy and helping small businesses grow their digital footprint.</p>
+                    <ul class="timeline-bullets">
+                      <li>Role: Entry Level</li>
+                      <li>Company: [Company Name]</li>
+                    </ul>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="timeline-nav-row">
+                <button class="timeline-nav-btn" id="tl-btn-left">&larr;Future</button>
+                <button class="timeline-nav-btn" id="tl-btn-right">Back in time &rarr;</button>
+              </div>
+
+              <div class="timeline-track-container">
+                <div class="timeline-line"></div>
+                <div class="timeline-dots" id="timeline-dots-container"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="learning-section">
+            <div class="section-header">
+              <span class="eyebrow">Growth Mindset</span>
+              <h2>Currently Learning</h2>
+            </div>
+            <div class="learning-grid">
+              <div class="learning-card">
+                <div class="learning-icon">&#9881;</div>
+                <div class="learning-info">
+                  <h3>Advanced JavaScript</h3>
+                  <p>Deepening knowledge in interactivity and dynamic content.</p>
+                </div>
+              </div>
+              <div class="learning-card">
+                <div class="learning-icon">&#128200;</div>
+                <div class="learning-info">
+                  <h3>Advanced SEO</h3>
+                  <p>Mastering technical SEO and local search strategies.</p>
+                </div>
+              </div>
+              <div class="learning-card">
+                <div class="learning-icon">&#127912;</div>
+                <div class="learning-info">
+                  <h3>3D Web Design</h3>
+                  <p>Exploring Spline and Three.js for immersive web experiences.</p>
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
-        <div class="footer-main">
-          <div class="footer-logo">
-            <img src="https://raw.githubusercontent.com/GabrielaFiona/gabrielafiona-portfolio-draft/18ee7c88c42c70f9b94f2337717cdd2bef7acb14/assets/img/namelogoblackwhitethicker.png" alt="Gabriela Fiona Cadena logo" />
+
+        <section class="section logo-section">
+          <div class="section-header logo-header">
+            <span class="eyebrow">Client Websites</span>
+            <h2>View My Work</h2>
           </div>
-          <div class="footer-copy">
-            <div>© <span id="year"></span> Gabriela Fiona</div>
-            <div class="footer-sub">Website & brand design for Oregon Coast businesses.</div>
+
+          <div class="logo-scroller" data-logo-scroller>
+            <div class="logo-track">
+              <a href="https://sites.google.com/view/newport-cleaning/home" target="_blank" class="logo-item">
+                <img src="https://raw.githubusercontent.com/GabrielaFiona/gabrielafiona-portfolio-draft/bcd915ac573c66f5b8e21cbdf11f62a973cf6dd0/assets/img/newportcleaninglogo.png" alt="Newport Cleaning logo" />
+              </a>
+              <a href="https://thebougiebeachparty.com/" target="_blank" class="logo-item">
+                <img src="https://raw.githubusercontent.com/GabrielaFiona/bougie-assets/9df34301c8c2518435e457578a6969fdffeed562/fulltranslogo.png" alt="Bougie logo" />
+              </a>
+              <a href="https://www.mcknighttoddbookkeeping.com/" target="_blank" class="logo-item">
+                <img src="https://raw.githubusercontent.com/GabrielaFiona/Dakota-assets-/807cb8f3f13dd1c400bc1038169838e3bb77ac3a/kotalogotrans.png" alt="Dakota logo" />
+              </a>
+              <a href="https://www.nathanshomerepairsolution.com/" target="_blank" class="logo-item">
+                <img src="https://raw.githubusercontent.com/GabrielaFiona/NHRS-assets/d1621c4ed0a719dfcacfbd6a427d1e8474d60230/NATHANSHOMEREPAIRSOLUTIONS.png" alt="Nathan’s Home Repair Solutions logo" />
+              </a>
+              <a href="https://sites.google.com/view/newport-cleaning/home" target="_blank" class="logo-item">
+                <img src="https://raw.githubusercontent.com/GabrielaFiona/gabrielafiona-portfolio-draft/18ee7c88c42c70f9b94f2337717cdd2bef7acb14/assets/img/newportcleaninglogo.png" alt="Newport Cleaning logo duplicate" />
+              </a>
+              <a href="https://thebougiebeachparty.com/" target="_blank" class="logo-item">
+                <img src="https://raw.githubusercontent.com/GabrielaFiona/bougie-assets/9df34301c8c2518435e457578a6969fdffeed562/fulltranslogo.png" alt="Bougie logo duplicate" />
+              </a>
+               <a href="https://sites.google.com/view/cavicandles/cavi" target="_blank" class="logo-item">
+                <img src="https://raw.githubusercontent.com/GabrielaFiona/gabrielafiona-portfolio-draft/041dfc90cd6c35ca0c93aa1dd215ab266ef26f19/assets/img/cavicandleslogobox.png" alt="Cavi Candles logo" />
+              </a>
+            </div>
           </div>
-        </div>
-      </footer>
-    </div>
-    <div id="layer-art" class="mode-layer hidden">
-      <section class="intro-hero">
-        <div class="intro-header-bg" style="background-image: url('https://images.pexels.com/photos/1148998/pexels-photo-1148998.jpeg'); padding-bottom: 8rem;">
-          <div class="hero-tagline" style="color: var(--bg);">Unfiltered</div>
-          <h1 style="color: var(--bg);">The Creative Canvas</h1>
-        </div>
-        
-        <div class="intro-inner section" style="margin-top: -6rem;">
-          <div class="intro-text" style="grid-column: 1 / -1; text-align: center;">
-             <span class="eyebrow">Welcome to my mind</span>
-             <h2>Art, Code, & Easter Eggs.</h2>
-             <p>This is where the structured architecture turns off, and the creative chaos begins. Add your galleries, hidden projects, or whatever you want here!</p>
+        </section>
+
+        <section id="vibe" class="section work-section">
+          <div class="section-header">
+            <span class="eyebrow">Project Library</span>
+            <h2>Creativity in every form.</h2>
           </div>
-        </div>
-      </section>
-    </div>
-    </div> </div> <script src="assets/js/script.js"></script>
+
+          <div class="carousel-shell">
+            <div class="carousel-header">
+              <div class="carousel-header-text">Creative Life</div>
+              <div class="carousel-nav">
+                <button class="carousel-btn" data-carousel-prev type="button">&larr;</button>
+                <button class="carousel-btn" data-carousel-next type="button">&rarr;</button>
+              </div>
+            </div>
+
+            <div class="carousel-window">
+              <div class="carousel-track">
+                <article class="carousel-item">
+                  <div class="carousel-visual">
+                    <img src="https://images.pexels.com/photos/1148998/pexels-photo-1148998.jpeg" alt="Painting" />
+                    <div class="carousel-mock-caption">Creative Outlet · Painting</div>
+                  </div>
+                  <div class="carousel-copy">
+                    <div class="carousel-title">Visual Expression</div>
+                    <p class="carousel-desc">I love to paint. It’s where I practice color theory and balance without the constraints of a grid.</p>
+                  </div>
+                </article>
+                <article class="carousel-item">
+                  <div class="carousel-visual">
+                    <img src="https://images.pexels.com/photos/6011603/pexels-photo-6011603.jpeg" alt="Roller Skating" />
+                    <div class="carousel-mock-caption">Movement · Roller Skating</div>
+                  </div>
+                  <div class="carousel-copy">
+                    <div class="carousel-title">Energy & Flow</div>
+                    <p class="carousel-desc">Roller skating is my way of staying active and finding flow.</p>
+                  </div>
+                </article>
+              </div>
+            </div>
+            <div class="carousel-dots" data-carousel-dots></div>
+          </div>
+        </section>
+
+        <footer class="mini-footer">
+          <div class="footer-social-row">
+            <a href="https://facebook.com/yourpage" target="_blank" rel="noopener" class="footer-social-link" aria-label="Visit my Facebook page">
+              <img src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/facebook.svg" class="fb-icon" alt="" />
+            </a>
+          </div>
+          <div class="footer-main">
+            <div class="footer-logo">
+              <img src="https://raw.githubusercontent.com/GabrielaFiona/gabrielafiona-portfolio-draft/18ee7c88c42c70f9b94f2337717cdd2bef7acb14/assets/img/namelogoblackwhitethicker.png" alt="Gabriela Fiona Cadena logo" />
+            </div>
+            <div class="footer-copy">
+              <div>© <span id="year"></span> Gabriela Fiona</div>
+              <div class="footer-sub">Website & brand design for Oregon Coast businesses.</div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </section>
+
+    <section class="contentPane" id="playPane">
+      <div class="page-wrapper" style="height: auto;">
+        <section class="intro-hero" style="margin-top: 5rem;">
+          <div class="intro-inner section" style="text-align: center; justify-content: center; display: flex; flex-direction: column;">
+            <span class="eyebrow" style="background: var(--accent-purple); -webkit-background-clip: text; color: transparent;">Unfiltered</span>
+            <h2>After Hours</h2>
+            <p style="max-width: 600px; margin: 0 auto;">This is where the structured architecture turns off, and the creative chaos begins. Your hidden galleries and 3D walkthrough go here!</p>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <div class="powerOverlay" id="powerOverlay"></div>
+
+  </main>
+</div>
+
+<script src="assets/js/script.js"></script>
 </body>
 </html>
